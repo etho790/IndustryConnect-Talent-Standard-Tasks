@@ -51,8 +51,44 @@ namespace Talent.Services.Profile.Domain.Services
 
         public async Task<TalentProfileViewModel> GetTalentProfile(string Id)
         {
-            //Your code here;
-            throw new NotImplementedException();
+            //AJAX CALL IS FIXED
+            var user = await _userRepository.GetByIdAsync(Id);
+
+            var videoUrl = string.IsNullOrWhiteSpace(user.VideoName)
+                           ? ""
+                           : await _fileService.GetFileURL(user.VideoName, FileType.UserVideo);
+
+            var result = new TalentProfileViewModel
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                MiddleName = user.MiddleName,
+                LastName = user.LastName,
+                Gender = user.Gender,
+                Email = user.Email,
+                Phone = user.Phone,
+                MobilePhone = user.MobilePhone,
+                IsMobilePhoneVerified = user.IsMobilePhoneVerified,
+                Summary = user.Summary,
+                Description = user.Description,
+                Nationality = user.Nationality,
+                Address = user.Address,
+                VisaStatus = user.VisaStatus,
+                VisaExpiryDate = user.VisaExpiryDate,
+                ProfilePhoto = user.ProfilePhoto,
+                ProfilePhotoUrl = user.ProfilePhotoUrl,
+                VideoName = user.VideoName,
+                VideoUrl = videoUrl,
+                /*Certifications = user.Certifications,
+                Experience = user.Experience,
+                Education = user.Education,
+                Skills = user.Skills                               
+                */
+            };
+
+            return result;
+            
+           
         }
 
         public async Task<bool> UpdateTalentProfile(TalentProfileViewModel model, string updaterId)

@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 
 export default class TalentProfile extends React.Component {
+    //has nothing to do with the talentprofile page
     render() {
         return (
             <div className="ui card">

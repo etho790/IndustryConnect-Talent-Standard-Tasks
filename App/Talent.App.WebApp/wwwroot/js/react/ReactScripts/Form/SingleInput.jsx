@@ -32,10 +32,10 @@ export class ChildSingleInput extends React.Component {
 
     constructor(props) {
         super(props);
+      
     };
 
     render() {
-
         return (
             <div className="field">
                 <label>{this.props.label}</label>

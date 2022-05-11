@@ -5,19 +5,34 @@ import { Location } from '../Employer/CreateJob/Location.jsx';
 export class IndividualDetailSection extends Component {
     constructor(props) {
         super(props)
-
+       
         const details = props.details ?
-            Object.assign({}, props.details)
-            : {
+            Object.assign({}, props.details) :{
                 firstName: "",
                 lastName: "",
                 email: "",
                 phone: ""
             }
 
+        //ADDED to make the empty properties into empty strings
+        for (const property in details) {           
+
+            if (details[property] == null || details[property] == undefined) {
+                details[property] = " "
+            }
+            
+        }
+
+        console.log("AHHHHHHHHHHHH",details);
+       
+       
+
         this.state = {
+             //IN THE STATE, YOU CREATE VARIABLES THAT CAN ONLY BE AFFECTED IN THE STATE, SO TO CHANGE THEM
+            //OUTSIDE OF THE CONSTRUCTOR YOU MUST USE SET.STATE
             showEditSection: false,
-            newContact: details
+            newContact: details,
+
         }
 
         this.openEdit = this.openEdit.bind(this)
@@ -26,14 +41,33 @@ export class IndividualDetailSection extends Component {
         this.saveContact = this.saveContact.bind(this)
         this.renderEdit = this.renderEdit.bind(this)
         this.renderDisplay = this.renderDisplay.bind(this)
+       
     }
 
     openEdit() {
-        const details = Object.assign({}, this.props.details)
+        const details = Object.assign({}, this.props.details)      
+
+        //ADDED to make the empty properties into empty strings
+        for (const property in details) {
+            if (details[property] == null || details[property] == undefined) {
+                details[property] = ""
+            }
+            
+        }
+
         this.setState({
             showEditSection: true,
-            newContact: details
+            newContact: {
+               // details: Object.assign({}, this.props.details, { email : "" }, { phone : ""})
+                details
+            }
+            
         })
+
+       
+
+        //I HAVE FORCED THE VALUES FOR THE PROPERTIES TO BE EMPTY STRINGS, BUT IT STILL THROWS ME THE UNDEFINED ERROR 
+        console.log("data ", this.state.newContact)
     }
 
     closeEdit() {
@@ -43,6 +77,7 @@ export class IndividualDetailSection extends Component {
     }
 
     handleChange(event) {
+
         const data = Object.assign({}, this.state.newContact)
         data[event.target.name] = event.target.value
         this.setState({
@@ -51,7 +86,7 @@ export class IndividualDetailSection extends Component {
     }
 
     saveContact() {
-        console.log(this.props.componentId)
+        
         console.log(this.state.newContact)
         const data = Object.assign({}, this.state.newContact)
         this.props.controlFunc(this.props.componentId, data)
@@ -64,7 +99,11 @@ export class IndividualDetailSection extends Component {
         )
     }
 
+   
+
+
     renderEdit() {
+
         return (
             <div className='ui sixteen wide column'>
                 <ChildSingleInput
@@ -77,6 +116,7 @@ export class IndividualDetailSection extends Component {
                     placeholder="Enter your first name"
                     errorMessage="Please enter a valid first name"
                 />
+
                 <ChildSingleInput
                     inputType="text"
                     label="Last Name"
@@ -87,6 +127,7 @@ export class IndividualDetailSection extends Component {
                     placeholder="Enter your last name"
                     errorMessage="Please enter a valid last name"
                 />
+
                 <ChildSingleInput
                     inputType="text"
                     label="Email address"
@@ -108,14 +149,16 @@ export class IndividualDetailSection extends Component {
                     placeholder="Enter a phone number"
                     errorMessage="Please enter a valid phone number"
                 />
-
+                
                 <button type="button" className="ui teal button" onClick={this.saveContact}>Save</button>
                 <button type="button" className="ui button" onClick={this.closeEdit}>Cancel</button>
             </div>
         )
     }
 
-    renderDisplay() {
+    renderDisplay(){
+       // console.log('details are ', this.props.details)
+
 
         let fullName = this.props.details ? `${this.props.details.firstName} ${this.props.details.lastName}` : ""
         let email = this.props.details ? this.props.details.email : ""
@@ -197,10 +240,7 @@ export class CompanyDetailSection extends Component {
     }
 
     renderEdit() {
-        let location = { city: '', country: '' }
-        if (this.state.newContact && this.state.newContact.location) {
-            location = this.state.newContact.location
-        }
+        
 
         return (
             <div className='ui sixteen wide column'>
