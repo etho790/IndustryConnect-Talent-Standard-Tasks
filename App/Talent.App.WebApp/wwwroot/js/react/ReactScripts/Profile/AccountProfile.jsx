@@ -111,8 +111,8 @@ export default class AccountProfile extends React.Component {
         this.setState({
             profileData: newProfile
         })
-
-        
+        console.log("UPDATING")
+        //this.updateAndSaveData(newProfile)//ADDED
     }
 
     //updates component's state and saves data
@@ -166,15 +166,15 @@ export default class AccountProfile extends React.Component {
 
         }
 
-        //console.log("this is the address",this.state.profileData.address)
-        //ADDED
-        const Location = {
-            Address: this.state.profileData.address ,
-            City: this.state.profileData.city ,
-            Country: this.state.profileData.country,
+        const visaDets = {
 
+            visaStatus: this.state.profileData.visaStatus, 
+            visaExpiryDate: this.state.profileData.visaExpiryDate 
         }
-        
+
+
+
+               
         return (
             <BodyWrapper reload={this.loadData} loaderData={this.state.loaderData}>
                 <section className="page-body">
@@ -189,7 +189,7 @@ export default class AccountProfile extends React.Component {
                                         >
                                              <SocialMediaLinkedAccount
                                                 linkedAccounts={this.state.profileData.linkedAccounts}
-                                                updateProfileData={this.updateWithoutSave}
+                                                updateProfileData={this.updateWithoutSave} //temp until the save ajax works
                                                 saveProfileData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
@@ -197,18 +197,21 @@ export default class AccountProfile extends React.Component {
                                             title='User Details'
                                             tooltip='Enter your contact details'
                                         >
+
                                             <IndividualDetailSection
-                                                controlFunc={this.updateForComponentId}
                                                 details={profile}
-                                                componentId='contactDetails'
+                                                updateProfileData={this.updateWithoutSave}//temp until the save ajax works
+                                                saveProfileData={this.updateAndSaveData}
+                                                //controlFunc={this.updateForComponentId}
+                                                //componentId='contactDetails'
                                             />
                                         </FormItemWrapper>
                                         <FormItemWrapper
                                             title='Address'
                                             tooltip='Enter your current address'>
                                              <Address
-                                                addressData={this.state.profileData.address}
-                                                    updateProfileData={this.updateWithoutSave}
+                                                    addressData={this.state.profileData.address}
+                                                    updateProfileData={this.updateWithoutSave}//temp until the save ajax works
                                                     saveProfileData={this.updateAndSaveData}
                                                 />
                                         </FormItemWrapper>
@@ -216,10 +219,11 @@ export default class AccountProfile extends React.Component {
                                             title='Nationality'
                                             tooltip='Select your nationality'
                                         >
-                                            {/*<Nationality
+                                            <Nationality
                                                 nationalityData={this.state.profileData.nationality}
+                                                updateProfileData={this.updateWithoutSave} //temp until the save ajax works
                                                 saveProfileData={this.updateAndSaveData}
-                                            />*/}
+                                            />
                                         </FormItemWrapper>
                                         <FormItemWrapper
                                             title='Languages'
@@ -270,12 +274,11 @@ export default class AccountProfile extends React.Component {
                                             title='Visa Status'
                                             tooltip='What is your current Visa/Citizenship status?'
                                         >
-                                            {/*<VisaStatus
-                                                visaStatus={this.state.profileData.visaStatus}
-                                                visaExpiryDate={this.state.profileData.visaExpiryDate}
+                                            <VisaStatus
+                                                visaStatus={visaDets}
                                                 updateProfileData={this.updateWithoutSave}
                                                 saveProfileData={this.updateAndSaveData}
-                                            />*/}
+                                            />
                                         </FormItemWrapper>
                                         <FormItemWrapper
                                             title='Status'

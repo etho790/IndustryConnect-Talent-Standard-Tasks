@@ -13,9 +13,9 @@ export default class SocialMediaLinkedAccount extends React.Component {
             //IN THE STATE, YOU CREATE VARIABLES THAT CAN ONLY BE AFFECTED IN THE STATE, SO TO CHANGE THEM
             //OUTSIDE OF THE CONSTRUCTOR YOU MUST USE SET.STATE 
             showEditSection: false,           
-            linkedAccounts: props.linkedAccounts,      //props.linkedAccounts is asigned to a var that can be changed in state
-            updateProfileData: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
-            saveProfileData: props.saveProfileData, //props.saveProfileData is asigned to a var that can be changed in state
+            linkedAccs: props.linkedAccounts,      //props.linkedAccounts is asigned to a var that can be changed in state
+            updateProfile: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
+            saveProfile: props.saveProfileData, //props.saveProfileData is asigned to a var that can be changed in state
         }
 
 
@@ -48,7 +48,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
 
     saveContact() {
         //copies this.state.linkedAccounts into data var
-        const data = Object.assign({}, this.state.linkedAccounts)
+        const data = Object.assign({}, this.state.linkedAccs)
         //Calls the saveprofiledata function passed in as props in the accountProfile jsx
         //the saveprofiledata calls a function that takes 1 argument. and the argument passed in data
         this.props.saveProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
@@ -59,12 +59,12 @@ export default class SocialMediaLinkedAccount extends React.Component {
     handleChange(event) {
         
         //copies this.state.linkedAccounts into data var
-        const data = Object.assign({}, this.state.linkedAccounts)        
+        const data = Object.assign({}, this.state.linkedAccs)
         //modifies the value of the specific property in the data array
         data[event.target.name] = event.target.value
         this.setState({
             //sets the state and modifies the linkedaccount var in state
-            linkedAccounts: data
+            linkedAccs: data
         })
         
     }
@@ -112,7 +112,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
                     inputType="text"
                     label="Linkedin"
                     name="linkedIn"
-                    value={this.state.linkedAccounts.linkedIn}
+                    value={this.state.linkedAccs.linkedIn}
                     controlFunc={this.handleChange}
                     maxLength={80}
                     placeholder="Enter your Linkedin url"
@@ -122,7 +122,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
                     inputType="text"
                     label="Github"
                     name="github"
-                    value={this.state.linkedAccounts.github}
+                    value={this.state.linkedAccs.github}
                     controlFunc={this.handleChange}
                     maxLength={80}
                     placeholder="Enter your Github url"

@@ -1,12 +1,15 @@
 ﻿import React, { Component } from "react";
 import Cookies from 'js-cookie';
+import { Form } from 'semantic-ui-react'
 import { ChildSingleInput } from '../Form/SingleInput.jsx';
 import { Location } from '../Employer/CreateJob/Location.jsx';
 export class IndividualDetailSection extends Component {
     constructor(props) {
         super(props)
-       
-        const details = props.details ?
+        
+        // if props.details is true (not null) return (or execute) Object.assign({}, props.details) & details = it
+        // otherwise make details = the empty strings for each property in the brackets below 
+        const dets = props.details ?
             Object.assign({}, props.details) :{
                 firstName: "",
                 lastName: "",
@@ -14,26 +17,21 @@ export class IndividualDetailSection extends Component {
                 phone: ""
             }
 
-        //ADDED to make the empty properties into empty strings
-        for (const property in details) {           
 
-            if (details[property] == null || details[property] == undefined) {
-                details[property] = " "
-            }
-            
-        }
-
-        console.log("AHHHHHHHHHHHH",details);
-       
-       
-
-        this.state = {
-             //IN THE STATE, YOU CREATE VARIABLES THAT CAN ONLY BE AFFECTED IN THE STATE, SO TO CHANGE THEM
-            //OUTSIDE OF THE CONSTRUCTOR YOU MUST USE SET.STATE
+        this.state = {            
             showEditSection: false,
-            newContact: details,
+            newContact: dets,//NOTE: the best way to know for sure as to what you're accessing in state is
+                            //to console.log to see if we are accessing the properties correctly
+
+            //not used
+            updateProfile: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
+            saveProfile: props.saveProfileData    //props.saveProfileData is asigned to a var that can be changed in state
+
 
         }
+
+        
+
 
         this.openEdit = this.openEdit.bind(this)
         this.closeEdit = this.closeEdit.bind(this)
@@ -45,29 +43,11 @@ export class IndividualDetailSection extends Component {
     }
 
     openEdit() {
-        const details = Object.assign({}, this.props.details)      
-
-        //ADDED to make the empty properties into empty strings
-        for (const property in details) {
-            if (details[property] == null || details[property] == undefined) {
-                details[property] = ""
-            }
-            
-        }
-
+        
         this.setState({
-            showEditSection: true,
-            newContact: {
-               // details: Object.assign({}, this.props.details, { email : "" }, { phone : ""})
-                details
-            }
-            
+            showEditSection: true, 
         })
 
-       
-
-        //I HAVE FORCED THE VALUES FOR THE PROPERTIES TO BE EMPTY STRINGS, BUT IT STILL THROWS ME THE UNDEFINED ERROR 
-        console.log("data ", this.state.newContact)
     }
 
     closeEdit() {
@@ -76,20 +56,28 @@ export class IndividualDetailSection extends Component {
         })
     }
 
-    handleChange(event) {
+    handleChange(event, { name, value }) {
+        //copies this.state.newContact.details into data var
+        const data = Object.assign({}, this.state.newContact)        
 
-        const data = Object.assign({}, this.state.newContact)
-        data[event.target.name] = event.target.value
+        //modifies the value of the specific property in the data array
+        data[name] = value
+
+        //This is how you set properties of an object in state.
         this.setState({
+            //sets the state and UPDATES the newContact var in state
             newContact: data
         })
+    
     }
 
     saveContact() {
-        
-        console.log(this.state.newContact)
+       //copies this.state.newContact into data var
         const data = Object.assign({}, this.state.newContact)
-        this.props.controlFunc(this.props.componentId, data)
+        //Calls the updateProfileData function passed in as props in the accountProfile jsx
+        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
+        this.state.updateProfile(data)  //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+         //close edit
         this.closeEdit()
     }
 
@@ -99,55 +87,39 @@ export class IndividualDetailSection extends Component {
         )
     }
 
-   
-
 
     renderEdit() {
 
+      //THE VALUE ATTRIBUTE IS USELESS, DISCARD IT
         return (
             <div className='ui sixteen wide column'>
-                <ChildSingleInput
-                    inputType="text"
-                    label="First Name"
+                <Form.Input
                     name="firstName"
-                    value={this.state.newContact.firstName}
-                    controlFunc={this.handleChange}
-                    maxLength={80}
-                    placeholder="Enter your first name"
-                    errorMessage="Please enter a valid first name"
+                    label="First Name"    
+                    onChange={this.handleChange}                    
+                    placeholder="Enter your first name"                    
                 />
 
-                <ChildSingleInput
-                    inputType="text"
-                    label="Last Name"
+                <Form.Input
                     name="lastName"
-                    value={this.state.newContact.lastName}
-                    controlFunc={this.handleChange}
-                    maxLength={80}
-                    placeholder="Enter your last name"
-                    errorMessage="Please enter a valid last name"
+                    label="Last Name"             
+                    onChange={this.handleChange}                
+                    placeholder="Enter your last name"                
                 />
 
-                <ChildSingleInput
-                    inputType="text"
-                    label="Email address"
+                <Form.Input
                     name="email"
-                    value={this.state.newContact.email}
-                    controlFunc={this.handleChange}
-                    maxLength={80}
-                    placeholder="Enter an email"
-                    errorMessage="Please enter a valid email"
+                    label="Email address"
+                    onChange={this.handleChange}                   
+                    placeholder="Enter an email"                    
                 />
 
-                <ChildSingleInput
-                    inputType="text"
-                    label="Phone number"
+                <Form.Input
                     name="phone"
-                    value={this.state.newContact.phone}
-                    controlFunc={this.handleChange}
-                    maxLength={12}
-                    placeholder="Enter a phone number"
-                    errorMessage="Please enter a valid phone number"
+                    type="number"
+                    label="Phone number"
+                    onChange={this.handleChange}                    
+                    placeholder="Enter a phone number"                    
                 />
                 
                 <button type="button" className="ui teal button" onClick={this.saveContact}>Save</button>
@@ -157,12 +129,11 @@ export class IndividualDetailSection extends Component {
     }
 
     renderDisplay(){
-       // console.log('details are ', this.props.details)
-
+      
 
         let fullName = this.props.details ? `${this.props.details.firstName} ${this.props.details.lastName}` : ""
         let email = this.props.details ? this.props.details.email : ""
-        let phone = this.props.details ? this.props.details.phone : ""
+        let phone = this.props.details ? this.props.details.phone : ""        
 
         return (
             <div className='row'>
