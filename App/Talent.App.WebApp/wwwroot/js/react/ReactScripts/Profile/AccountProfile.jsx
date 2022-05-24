@@ -59,7 +59,7 @@ export default class AccountProfile extends React.Component {
 
         this.updateWithoutSave = this.updateWithoutSave.bind(this)
         this.updateAndSaveData = this.updateAndSaveData.bind(this)
-        this.updateForComponentId = this.updateForComponentId.bind(this)
+       
         this.saveProfile = this.saveProfile.bind(this)
         this.loadData = this.loadData.bind(this)
         this.init = this.init.bind(this);
@@ -123,9 +123,7 @@ export default class AccountProfile extends React.Component {
         }, this.saveProfile)
     }
 
-    updateForComponentId(componentId, newValues) {
-        this.updateAndSaveData(newValues)
-    }
+   
 
     saveProfile() {
         //FIX THE POST AJAX CALL
@@ -141,7 +139,7 @@ export default class AccountProfile extends React.Component {
             success: function (res){
                 console.log(res)
                 if (res.success == true) {
-                    this.loadData()     //ADDED
+                    
                     TalentUtil.notification.show("Profile updated sucessfully", "success", null, null)
                 } else {
                     TalentUtil.notification.show("Profile did not update successfully", "error", null, null)
@@ -172,8 +170,10 @@ export default class AccountProfile extends React.Component {
             visaExpiryDate: this.state.profileData.visaExpiryDate 
         }
 
-
-
+        const DescriptionData = {
+            summary: this.state.profileData.summary,
+            description: this.state.profileData.description
+        }
                
         return (
             <BodyWrapper reload={this.loadData} loaderData={this.state.loaderData}>
@@ -324,12 +324,17 @@ export default class AccountProfile extends React.Component {
                                                 saveCVUrl={'http://localhost:60290/profile/profile/updateTalentCV'}
                                             />*/}
                                         </FormItemWrapper>
-                                        {/*<SelfIntroduction
-                                            summary={this.state.profileData.summary}
-                                            description={this.state.profileData.description}
-                                            updateProfileData={this.updateAndSaveData}
-                                            updateWithoutSave={this.updateWithoutSave}
-                                        />*/}
+
+                                       
+                                        <FormItemWrapper
+                                            title='Description' 
+                                        >
+                                        <SelfIntroduction
+                                            summaryData={DescriptionData}                                           
+                                            updateProfileData={this.updateWithoutSave}
+                                            saveProfileData={this.updateAndSaveData}
+                                        />
+                                        </FormItemWrapper>
                                     </div>
                                 </form>
                             </div >

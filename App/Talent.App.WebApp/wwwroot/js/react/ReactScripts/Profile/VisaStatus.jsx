@@ -86,7 +86,6 @@ export default class VisaStatus extends React.Component {
 
     render() {
         return (        
-
             this.renderEdit()
         )
     }
@@ -126,7 +125,7 @@ export default class VisaStatus extends React.Component {
                                     </Grid.Column >
 
                                     <Grid.Column width={4}>
-                                        <button type="button" className="ui right floated teal button" onClick={this.saveContact}>Save</button>
+                                    <button style={{ marginTop: '1.5rem' }} type="button" className="ui right floated teal button" onClick={this.saveContact}>Save</button>
                                     </Grid.Column>
                                 </React.Fragment>
 
@@ -143,7 +142,7 @@ export default class VisaStatus extends React.Component {
                                         />
                                       </Grid.Column >
                                     <Grid.Column width={4}>
-                                        <button type="button" className="ui right floated teal button" onClick={this.saveContact}>Save</button>
+                                     <button style={{ marginTop: '1.5rem' }} type="button" className="ui right floated teal button" onClick={this.saveContact}>Save</button>
                                     </Grid.Column>
                                 </React.Fragment>                                
         }
