@@ -24,7 +24,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
         this.closeEdit = this.closeEdit.bind(this)
         this.renderDisplay = this.renderDisplay.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.saveContact = this.saveContact.bind(this)
+        this.saveDetails = this.saveDetails.bind(this)
     }
 
     componentDidMount() {
@@ -46,7 +46,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
         })
     }
 
-    saveContact() {
+    saveDetails() {
         //copies this.state.linkedAccounts into data var
         const data = Object.assign({}, this.state.linkedAccs)
         //Calls the saveprofiledata function passed in as props in the accountProfile jsx
@@ -128,7 +128,7 @@ export default class SocialMediaLinkedAccount extends React.Component {
                     placeholder="Enter your Github url"
                     errorMessage="Please enter your github url"
                 />
-                <button type="button" className="ui teal button" onClick={this.saveContact}>Save</button>
+                <button type="button" className="ui teal button" onClick={this.saveDetails}>Save</button>
                 <button type="button" className="ui button" onClick={this.closeEdit}>Cancel</button>
         </div>
         )

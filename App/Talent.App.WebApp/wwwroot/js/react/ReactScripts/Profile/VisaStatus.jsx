@@ -30,12 +30,11 @@ export default class VisaStatus extends React.Component {
         this.closeEdit = this.closeEdit.bind(this)
         this.renderEdit = this.renderEdit.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.saveContact = this.saveContact.bind(this)
+        this.saveDetails = this.saveDetails.bind(this)
        // this.renderDisplay = this.renderDisplay.bind(this)
     }
 
     openEdit() {
-
         this.setState({
             showEditSection: true,
         })
@@ -65,14 +64,11 @@ export default class VisaStatus extends React.Component {
         this.setState({
             //sets the state and UPDATES the Nationality var in state
             VisaInfo: data
-        })
-        //Saves the data too
-        this.saveContact();
-
+        })             
     }
 
 
-    saveContact() {
+    saveDetails() {
         //copies this.state.VisaInfo into data var
         const data = Object.assign({}, this.state.VisaInfo)
 
@@ -125,7 +121,7 @@ export default class VisaStatus extends React.Component {
                                     </Grid.Column >
 
                                     <Grid.Column width={4}>
-                                    <button style={{ marginTop: '1.5rem' }} type="button" className="ui right floated teal button" onClick={this.saveContact}>Save</button>
+                    <button style={{ marginTop: '1.5rem' }} type="button" className="ui right floated teal button" onClick={this.saveDetails}>Save</button>
                                     </Grid.Column>
                                 </React.Fragment>
 
@@ -142,7 +138,7 @@ export default class VisaStatus extends React.Component {
                                         />
                                       </Grid.Column >
                                     <Grid.Column width={4}>
-                                     <button style={{ marginTop: '1.5rem' }} type="button" className="ui right floated teal button" onClick={this.saveContact}>Save</button>
+                    <button style={{ marginTop: '1.5rem' }} type="button" className="ui right floated teal button" onClick={this.saveDetails}>Save</button>
                                     </Grid.Column>
                                 </React.Fragment>                                
         }

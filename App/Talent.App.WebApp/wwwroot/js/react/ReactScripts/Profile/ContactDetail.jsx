@@ -36,7 +36,7 @@ export class IndividualDetailSection extends Component {
         this.openEdit = this.openEdit.bind(this)
         this.closeEdit = this.closeEdit.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.saveContact = this.saveContact.bind(this)
+        this.saveDetails = this.saveDetails.bind(this)
         this.renderEdit = this.renderEdit.bind(this)
         this.renderDisplay = this.renderDisplay.bind(this)
        
@@ -71,7 +71,7 @@ export class IndividualDetailSection extends Component {
     
     }
 
-    saveContact() {
+    saveDetails() {
        //copies this.state.newContact into data var
         const data = Object.assign({}, this.state.newContact)
         //Calls the updateProfileData function passed in as props in the accountProfile jsx
@@ -122,7 +122,7 @@ export class IndividualDetailSection extends Component {
                     placeholder="Enter a phone number"                    
                 />
                 
-                <button type="button" className="ui teal button" onClick={this.saveContact}>Save</button>
+                <button type="button" className="ui teal button" onClick={this.saveDetails}>Save</button>
                 <button type="button" className="ui button" onClick={this.closeEdit}>Cancel</button>
             </div>
         )

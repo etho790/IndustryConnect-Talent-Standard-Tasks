@@ -25,7 +25,7 @@ export default class SelfIntroduction extends React.Component {
         }
 
         this.handleChange = this.handleChange.bind(this);
-        this.saveSummary = this.saveSummary.bind(this);
+        this.saveDetails = this.saveDetails.bind(this);
 
        
     };
@@ -46,7 +46,7 @@ export default class SelfIntroduction extends React.Component {
         console.log(data)
     }
 
-    saveSummary() {
+    saveDetails() {
         //copies this.state.SelfDescription into data var
         const data = Object.assign({}, this.state.SelfDescription)
 
@@ -82,7 +82,7 @@ export default class SelfIntroduction extends React.Component {
                 <List>
                     <List.Item>Description must be between 150-600 characters.</List.Item>
                 </List>
-                <button style={{ marginTop: '1rem' }} type="button" className="ui teal right floated button" onClick={this.saveSummary}>Save</button>
+                <button style={{ marginTop: '1rem' }} type="button" className="ui teal right floated button" onClick={this.saveDetails}>Save</button>
             </div>
         )
 

@@ -41,7 +41,7 @@ export class Address extends React.Component {
         this.closeEdit = this.closeEdit.bind(this)
         this.renderDisplay = this.renderDisplay.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.saveContact = this.saveContact.bind(this)
+        this.saveDetails = this.saveDetails.bind(this)
     }
 
     openEdit() {
@@ -63,7 +63,7 @@ export class Address extends React.Component {
             this.state.showEditSection ? this.renderEdit() : this.renderDisplay()      
             )
     }
-    saveContact() {
+    saveDetails() {
         
         //copies this.state.Address into data var
         const data = Object.assign({}, this.state.Address)
@@ -227,7 +227,7 @@ export class Address extends React.Component {
                 </div>
                 <div className='row'>
                     <div className='six wide column'>
-                    <button type="button" className="ui teal button" onClick={this.saveContact}>Save</button>
+                        <button type="button" className="ui teal button" onClick={this.saveDetails}>Save</button>
                     <button type="button" className="ui button" onClick={this.closeEdit}>Cancel</button>
                     </div>
                 </div>
@@ -265,7 +265,7 @@ export class Nationality extends React.Component {
         this.closeEdit = this.closeEdit.bind(this)
         this.renderDisplay = this.renderDisplay.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.saveContact = this.saveContact.bind(this)
+        this.saveDetails = this.saveDetails.bind(this)
         this.renderDisplay = this.renderDisplay.bind(this)
     }
     
@@ -288,7 +288,7 @@ export class Nationality extends React.Component {
         )
     }
 
-    saveContact() {
+    saveDetails() {
         
         //copies this.state.Nationality into data var
         const data = Object.assign({}, this.state.Nationality)
@@ -314,7 +314,7 @@ export class Nationality extends React.Component {
             Nationality: data
         })
         //Saves the data too
-        this.saveContact();
+        this.saveDetails();
     }
 
 

@@ -174,6 +174,7 @@ export default class AccountProfile extends React.Component {
             summary: this.state.profileData.summary,
             description: this.state.profileData.description
         }
+                
                
         return (
             <BodyWrapper reload={this.loadData} loaderData={this.state.loaderData}>
@@ -229,10 +230,11 @@ export default class AccountProfile extends React.Component {
                                             title='Languages'
                                             tooltip='Select languages that you speak'
                                         >
-                                            {/*<Language
+                                            <Language
                                                 languageData={this.state.profileData.languages}
                                                 updateProfileData={this.updateAndSaveData}
-                                            />*/}
+                                                saveProfileData={this.updateAndSaveData}
+                                            />
                                         </FormItemWrapper>
                                         <FormItemWrapper
                                             title='Skills'
@@ -262,18 +264,9 @@ export default class AccountProfile extends React.Component {
                                             />*/}
                                         </FormItemWrapper>
                                         <FormItemWrapper
-                                            title='Certification'
-                                            tooltip='List your certificates, honors and awards'
-                                        >
-                                            {/*<Certificate
-                                                certificateData={this.state.profileData.certifications}
-                                                updateProfileData={this.updateAndSaveData}
-                                            />*/}
-                                        </FormItemWrapper>
-                                        <FormItemWrapper
                                             title='Visa Status'
                                             tooltip='What is your current Visa/Citizenship status?'
-                                        >
+                                         >
                                             <VisaStatus
                                                 visaStatus={visaDets}
                                                 updateProfileData={this.updateWithoutSave}
@@ -312,20 +305,7 @@ export default class AccountProfile extends React.Component {
                                                 saveVideoUrl={'http://localhost:60290/profile/profile/updateTalentVideo'}
                                             />*/}
                                         </FormItemWrapper>
-                                        <FormItemWrapper
-                                            title='CV'
-                                            tooltip='Upload your CV. Accepted files are pdf, doc & docx)'
-                                            hideSegment={true}
-                                        >
-                                            {/*<CVUpload
-                                                cvName={this.state.profileData.cvName}
-                                                cvUrl={this.state.profileData.cvUrl}
-                                                updateProfileData={this.updateWithoutSave}
-                                                saveCVUrl={'http://localhost:60290/profile/profile/updateTalentCV'}
-                                            />*/}
-                                        </FormItemWrapper>
-
-                                       
+                                                                               
                                         <FormItemWrapper
                                             title='Description' 
                                         >
