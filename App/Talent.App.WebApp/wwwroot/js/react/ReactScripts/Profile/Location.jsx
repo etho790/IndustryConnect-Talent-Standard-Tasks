@@ -58,11 +58,6 @@ export class Address extends React.Component {
     }
 
 
-    render() {
-        return (
-            this.state.showEditSection ? this.renderEdit() : this.renderDisplay()      
-            )
-    }
     saveDetails() {
         
         //copies this.state.Address into data var
@@ -89,6 +84,12 @@ export class Address extends React.Component {
             //sets the state and UPDATES the Address var in state
             Address: data
         })        
+    }
+
+    render() {
+        return (
+            this.state.showEditSection ? this.renderEdit() : this.renderDisplay()
+        )
     }
 
     renderDisplay() {
@@ -147,8 +148,7 @@ export class Address extends React.Component {
             }))
         }
         
-        //WHAT IT LOOKS LIKE ONCE YOU PRESS EDIT
-       
+        //WHAT IT LOOKS LIKE ONCE YOU PRESS EDIT       
         return (
             <div className="ui grid">
                 <div className='row'>

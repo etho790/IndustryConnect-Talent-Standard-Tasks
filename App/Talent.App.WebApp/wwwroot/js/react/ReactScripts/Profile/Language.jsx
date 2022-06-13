@@ -1,7 +1,7 @@
 ﻿/* Language section */
 import React from 'react';
 import Cookies from 'js-cookie';
-import { Dropdown, Form, Grid, Table } from 'semantic-ui-react'
+import { Icon, Dropdown, Form, Grid, Button,Table } from 'semantic-ui-react'
 
 export default class Language extends React.Component {
     constructor(props) {
@@ -13,13 +13,21 @@ export default class Language extends React.Component {
                 languages: [],               
             }
 
-
         this.state = {
-            Languages: Dets,
-            addLanguageSection: null,
-            //!!!!!! MIGHT HAVE TO ADD AN OBJECT THAT HAS THE PROPERTIES OF name & value & THEN ADD IT ONTO LANGUAGES
-            //SINCE WE CANT CHANGE THE STRUCTURE OF THE LANGUAGES ARRAY AT ALL, BUT WE CAN CHANGE IT INDIRECTLY!!!!!!!
+            Languages: Dets,  //languages var only contains the name of the languages and is sent back to the Accprofile.jsx when you save
+            addLanguageSection: null,   //essentially is div that is rendered when you click on add
+            
+            TempLanguageVar: {//temp var that contains the current element & the id (of a particular element, only to be updated later for the table down below)
+                              //otherwise the id when adding entries will be the arbitrary number 0 
+                              //to populate newLanguage array & Languages array
+                id: '',
+                name: '',
+                level: '',
+            },
+            newLanguage: [],  //newLanguage is an array of the name & the level of proficiency of the languages & stays in state for this class
 
+            LanguageDataforTableArray :[], //this array will be populated with all the entries of newLanguage AND will have a unique id for each
+            update: false,
 
             //not used
             updateProfile: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
@@ -30,48 +38,119 @@ export default class Language extends React.Component {
         this.HandleAddLanguage = this.HandleAddLanguage.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.saveDetails = this.saveDetails.bind(this);
-        this.openEdit = this.openEdit.bind(this)
+        
         this.closeEdit = this.closeEdit.bind(this)        
         this.renderDisplay = this.renderDisplay.bind(this)
+        this.ClicktoUpdateFunc = this.ClicktoUpdateFunc.bind(this)
+        this.HandleUpdatedChange = this.HandleUpdatedChange.bind(this)
+        this.SaveUpdatedChanges = this.SaveUpdatedChanges.bind(this)
     }
 
    
 
     // NOTE The HandleChangeFunction should very closely resemble the function from the docs, because
-    //based on the types of elements (ie; dropdown, input, label) we use, for it to react to userinput
+    //based on the types of elements (ie; dropdown, input, label), MAINLY INPUT we use, for it to react to userinput
     // the handlechange function given MUST be similar with the sae parameters, otherwise it will be confusing
+    //HANDLECHANGE FUNCTION CAN EITHER HAVE ONE PARAMETER OR IT CAN LOOK LIKE THIS "(e, { name, value })"
+    //if it deviates from how it's supposed to look like it wont work as intended
     handleChange(event) {
-
-        //copies this.state.LanguageLevel into data var
-        const data = Object.assign({}, this.state.Languages)
-
-        //modifies the value of the specific property in the data array
-        data[event.target.name] = event.target.value
-               
-        this.setState({ Languages: data });
         
+        //Constantly at run time copies this.state.TempLanguageVar into data var
+        const data = Object.assign({}, this.state.TempLanguageVar)
+
+        //modifies the value of the specific property in the data var
+        data[event.target.name] = event.target.value
+
+       //Constantly at run time updates the specific properties in the intended state variable
+        this.setState({
+            TempLanguageVar: {
+                id: 0,                      //temporary arbitrary set value
+                name: data['name'],
+                level: data['level']
+            }
+        })
+
+       
     }
 
     saveDetails() {
-        //copies this.state.LanguageLevel into data var
-        const data = Object.assign({}, this.state.Languages)
+        //copies the updated this.state.TempLanguageVar into data var
+        const data = Object.assign({}, this.state.TempLanguageVar)
+        
+        this.setState({
+            //This is how you dynamically fill up an array of objects with specified properties
+            newLanguage: [...this.state.newLanguage, {
+                name: data['name'],
+                level: data['level'],                        
+            }],
+            //So the Languages array only has the previous entry + the name of the new language updated
+            Languages: [...this.state.Languages, data['name']]      
+        })        
+        
+        console.log("the Languages array", this.state.Languages)
 
-
-        //!!!!!!!!!!WILL HAVE TO LOOK INTO STUFF HERE TO ADD ONTO THE LANGUAGES ARRAY!!!!!!!!
 
         //Calls the updateProfileData function passed in as props in the accountProfile jsx
         //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
-
+        this.props.updateProfileData(this.state.Languages)   
+        
         //close edit
         this.closeEdit()
     }
 
-    openEdit() {
-        this.setState({
+    
+    HandleUpdatedChange(event) {
+        //Constantly at run time copies this.state.TempLanguageVar into data var
+        const data = Object.assign({}, this.state.TempLanguageVar)
 
-        })
+        //modifies the value of the specific property in the data var
+        data[event.target.name] = event.target.value
+        
+        //Constantly at run time updates the specific properties in the intended state variable
+        this.setState(prevState => ({
+            TempLanguageVar: {
+                id: prevState.TempLanguageVar.id,    //id of the language gotten from ClicktoUpdateFunc, which is prevstates value
+                name: data['name'],
+                level: data['level']
+            }
+        }))       
     }
+
+    
+    SaveUpdatedChanges(){
+
+        //gets all the entries in newLanguage and fills the languagesdataArray
+        let languagesdataArray = [...this.state.newLanguage];
+        //copies the updated this.state.TempLanguageVar into UpdatedLanguagedata var 
+        //to later update the specific entry of the languagesdataArray
+        let UpdatedLanguagedata = Object.assign({}, this.state.TempLanguageVar)
+
+        //update current entry in languagesdataArray based on the UpdatedLanguagedata.id & only updates the name & level atributes
+        languagesdataArray[UpdatedLanguagedata.id] = {
+            name: this.state.TempLanguageVar['name'],
+            level: this.state.TempLanguageVar['level']
+        }
+
+        //this array is to update our Languages array in state that only holds the names of the languages
+        let languagesArray = []
+        for (var i = 0; i < languagesdataArray.length; i++) {
+           languagesArray.push(languagesdataArray[i].name)            
+        }
+
+        this.setState({
+            //update the state of newLanguage
+            newLanguage: languagesdataArray,         
+            //updated languages to equal the new updated languagesArray
+            Languages: languagesArray,
+            update:false
+        })
+
+        //Calls the updateProfileData function passed in as props in the accountProfile jsx
+        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
+        this.props.updateProfileData(this.state.Languages)
+        
+    }
+
 
     closeEdit() {
         this.setState({
@@ -79,21 +158,18 @@ export default class Language extends React.Component {
         })
     }
 
-
     render() {
         return (
             this.renderDisplay()
         )        
     }
 
-
-   
-
+    // when the add new button is clicked
     HandleAddLanguage(event) {
 
         if (this.state.addLanguageSection == null) {
-            this.setState({
-                            
+            //This is how you add elements to a state variable
+            this.setState({                            
                 addLanguageSection : <React.Fragment>
                                         <div className="ui sixteen column grid">
 
@@ -123,38 +199,58 @@ export default class Language extends React.Component {
                                         </div>
                                      </React.Fragment>
 
-
             })
         }
 
     }
 
-
-    renderDisplay() {
-
-        //!!!!!!!!!WILL HAVE TO LOOK INTO EXPANDING THIS SECTION!!!!!!!!
-
-        const languages = this.state.languages ? this.state.languages : [];
-        let tableData = [];
-
-        languages.map((x, index) => {
-            tableData.push(<Table.Row key={x.id}>
-                                <Table.Cell>
-                                    { x.name}
-                                </Table.Cell>
-            </Table.Row>);
-
-
-
+   
+    
+    ClicktoUpdateFunc(e, UPDATE, id) {
+        //This function is responsible for PRIMARILY changing the update variable & for getting the this.state.TempLanguageVar.id
+        var language;
+        //we are going through the LanguageDataforTableArray array to get the exact element and stor it in our language var
+        //so that we can get the element entry & update the id of our element in our TempLanguageVar state variable
+        this.state.LanguageDataforTableArray.forEach(element => {
+            if (id == element.id ) {
+                language = element
+                return
+            }
         });
 
+        //the id of the TempLanguageVar is updated for the currently clicked entry we want to update
+        this.setState({
+            update: UPDATE, //sets the update state to either true or false
+            TempLanguageVar: {
+                id: language.id,                      //id updated
+                name: language.name,
+                level: language.level
+            }
+        })
+    }
+
+   
 
 
+    renderDisplay() {
+        
 
+        const languages = this.state.newLanguage ? this.state.newLanguage : [];
+        // LanguageDataforTable (local variable) is being populated to loop through and fill our table
+        let LanguageDataforTable = [];
+        LanguageDataforTable = Object.keys(languages).map((index, value ) => ({
+            id: value,
+            name: this.state.newLanguage[value].name,
+            level: this.state.newLanguage[value].level,
+           
+        }))
 
-
-
-
+        //this.state.LanguageDataforTableArray is being populated too but primarily
+        this.state.LanguageDataforTableArray = Object.keys(languages).map((index, value) => ({
+            id: value,
+            name: this.state.newLanguage[value].name,
+            level: this.state.newLanguage[value].level,
+        }))
 
         return(
         <div className='ui sixteen column wide'>
@@ -172,9 +268,72 @@ export default class Language extends React.Component {
 
                     </Table.Row>
                 </Table.Header>
-                <Table.Body>
-                    {null}
+                    <Table.Body>
+                        <React.Fragment>
+                            {LanguageDataforTable.map((CurrentLanguage =>
 
+                                <tr key={CurrentLanguage.id}>
+                                    <Table.Cell >
+                                    {/* the condition "CurrentLanguage.id == this.state.TempLanguageVar.id" will be met in the ClicktoUpdateFunc function */}
+                                    {                                            
+                                                (this.state.update && CurrentLanguage.id == this.state.TempLanguageVar.id) ?
+                                                <div className='ui five wide column'>                                                   
+                                                    <Form.Input
+                                                        placeholder='Add Language'
+                                                        name='name'
+                                                        onChange={this.HandleUpdatedChange}
+                                                    />
+                                                </div>
+                                                : CurrentLanguage.name
+                                    }           {/*if the update pencil buttons not clicked just display the CurrentLanguage.name*/}
+                                    
+                                    </Table.Cell>
+                                    <Table.Cell >
+                                    {/* the condition "CurrentLanguage.id == this.state.TempLanguageVar.id" will be met in the ClicktoUpdateFunc function */}
+                                    {                                       
+                                        (this.state.update && CurrentLanguage.id == this.state.TempLanguageVar.id) ?
+                                            <div className='ui five wide column'>
+                                                    <select placeholder='Language Level' name='level' onChange={this.HandleUpdatedChange}>
+                                                    <option value=''>Language Level</option>
+                                                    <option value='Basic'>Basic</option>
+                                                    <option value='Conversational'>Conversational</option>
+                                                    <option value='Fluent'>Fluent</option>
+                                                    <option value='Native/Bilingual'>Native/Bilingual</option>
+                                                </select>
+                                            </div>
+                                            : CurrentLanguage.level
+                                    }{/*if the update pencil buttons not clicked just display the CurrentLanguage.name*/}
+                                                
+                                    
+                                    </Table.Cell>
+                                    <Table.Cell className='right aligned'>
+
+
+                                        <React.Fragment>
+                                            {/*The right way to call a function, that has a vital arguement, has to be 'this' 
+                                             * & the main argument that you would ike to pass through, Moreover the Function
+                                             * MUST have the same amount of parameters, call it 'e' & the arbitrary argument names*/}
+
+                                            {/* the condition "CurrentLanguage.id == this.state.TempLanguageVar.id" will be met in the ClicktoUpdateFunc function */}
+                                            {(this.state.update && CurrentLanguage.id == this.state.TempLanguageVar.id) ?
+                                                <React.Fragment>
+                                                    <button className='ui blue basic button' type='button' onClick={this.SaveUpdatedChanges}>Update</button>
+                                                <button className='ui basic red button' type='button' color='red' onClick={() => (this.ClicktoUpdateFunc(this, false, CurrentLanguage.id))}>Cancel</button>
+                                                </React.Fragment>
+                                                :
+                                                <React.Fragment>
+                                                    <Icon name='pencil' onClick={() => (this.ClicktoUpdateFunc(this, true, CurrentLanguage.id))} />
+                                                    <Icon name='delete' onClick={null} />
+                                                </React.Fragment>
+                                              }
+                                        </React.Fragment>
+                                    </Table.Cell>
+
+                                </tr>
+
+
+                            ))}
+                        </React.Fragment>
                 </Table.Body>
 
             </Table>

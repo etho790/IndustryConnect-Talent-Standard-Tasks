@@ -27,7 +27,6 @@ export class IndividualDetailSection extends Component {
             updateProfile: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
             saveProfile: props.saveProfileData    //props.saveProfileData is asigned to a var that can be changed in state
 
-
         }
 
         

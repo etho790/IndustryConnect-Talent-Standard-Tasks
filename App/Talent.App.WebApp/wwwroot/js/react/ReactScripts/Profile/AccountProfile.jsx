@@ -110,9 +110,9 @@ export default class AccountProfile extends React.Component {
         let newProfile = Object.assign({}, this.state.profileData, newValues)
         this.setState({
             profileData: newProfile
-        })
-        console.log("UPDATING")
-        //this.updateAndSaveData(newProfile)//ADDED
+        }, this.saveProfile)
+       
+        
     }
 
     //updates component's state and saves data
@@ -126,7 +126,7 @@ export default class AccountProfile extends React.Component {
    
 
     saveProfile() {
-        //FIX THE POST AJAX CALL
+        
         var cookies = Cookies.get('talentAuthToken');
         $.ajax({
             url: 'http://localhost:60290/profile/profile/updateTalentProfile',
@@ -137,7 +137,7 @@ export default class AccountProfile extends React.Component {
             type: "POST",
             data: JSON.stringify(this.state.profileData),
             success: function (res){
-                console.log(res)
+                console.log("THIS IS THE RESPONSE", res)
                 if (res.success == true) {
                     
                     TalentUtil.notification.show("Profile updated sucessfully", "success", null, null)
@@ -195,6 +195,15 @@ export default class AccountProfile extends React.Component {
                                             />
                                         </FormItemWrapper>
                                         <FormItemWrapper
+                                            title='Description'
+                                        >
+                                            <SelfIntroduction
+                                                summaryData={DescriptionData}
+                                                updateProfileData={this.updateWithoutSave}
+                                                saveProfileData={this.updateAndSaveData}
+                                            />
+                                        </FormItemWrapper>
+                                        <FormItemWrapper
                                             title='User Details'
                                             tooltip='Enter your contact details'
                                         >
@@ -203,8 +212,7 @@ export default class AccountProfile extends React.Component {
                                                 details={profile}
                                                 updateProfileData={this.updateWithoutSave}//temp until the save ajax works
                                                 saveProfileData={this.updateAndSaveData}
-                                                //controlFunc={this.updateForComponentId}
-                                                //componentId='contactDetails'
+                                               
                                             />
                                         </FormItemWrapper>
                                         <FormItemWrapper
@@ -236,6 +244,8 @@ export default class AccountProfile extends React.Component {
                                                 saveProfileData={this.updateAndSaveData}
                                             />
                                         </FormItemWrapper>
+
+
                                         <FormItemWrapper
                                             title='Skills'
                                             tooltip='List your skills'
@@ -306,15 +316,7 @@ export default class AccountProfile extends React.Component {
                                             />*/}
                                         </FormItemWrapper>
                                                                                
-                                        <FormItemWrapper
-                                            title='Description' 
-                                        >
-                                        <SelfIntroduction
-                                            summaryData={DescriptionData}                                           
-                                            updateProfileData={this.updateWithoutSave}
-                                            saveProfileData={this.updateAndSaveData}
-                                        />
-                                        </FormItemWrapper>
+                                       
                                     </div>
                                 </form>
                             </div >
