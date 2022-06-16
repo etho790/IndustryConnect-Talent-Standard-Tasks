@@ -31,7 +31,7 @@ export default class VisaStatus extends React.Component {
         this.renderEdit = this.renderEdit.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.saveDetails = this.saveDetails.bind(this)
-       // this.renderDisplay = this.renderDisplay.bind(this)
+       
     }
 
     openEdit() {
@@ -53,16 +53,18 @@ export default class VisaStatus extends React.Component {
     }
 
     // NOTE The HandleChangeFunction should very closely resemble the function from the docs, because
-    //based on the types of elements (ie; dropdown, input, label) we use, for it to react to userinput
+    //based on the types of elements (ie; dropdown, input, label), MAINLY INPUT we use, for it to react to userinput
     // the handlechange function given MUST be similar with the sae parameters, otherwise it will be confusing
+    //HANDLECHANGE FUNCTION CAN EITHER HAVE ONE PARAMETER OR IT CAN LOOK LIKE THIS "(e, { name, value })"
+    //if it deviates from how it's supposed to look like it wont work as intended
     handleChange(event, { name, value }) {
-        //copies this.state.VisaInfo into data var
+        //Constantly at run time copies this.state.VisaInfo into data var
         const data = Object.assign({}, this.state.VisaInfo)
         //modifies the value of the specific property in the data array
         data[name] = value
 
         this.setState({
-            //sets the state and UPDATES the Nationality var in state
+            //Constantly at run time sets the state and UPDATES the Nationality var in state
             VisaInfo: data
         })             
     }
@@ -74,7 +76,7 @@ export default class VisaStatus extends React.Component {
 
         //Calls the updateProfileData function passed in as props in the accountProfile jsx
         //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+        //this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
 
         //close edit
         this.closeEdit()
@@ -87,7 +89,7 @@ export default class VisaStatus extends React.Component {
     }
 
 
-    //ADD PADDING TO EACH OF THE COLUMNS & MARGIN TO STYLE THEM & GET THE BUTTON ON THE RIGHT!!!!!!!
+    
 
     renderEdit() {
         var VisaType = [        
@@ -158,8 +160,7 @@ export default class VisaStatus extends React.Component {
                         options={VisaType}
                         onChange={this.handleChange}    // handles the selected options & saves it after clicking
                                 />
-                    </Grid.Column>
-                    
+                    </Grid.Column>                    
                    
                         {ElementToRender}
                                 

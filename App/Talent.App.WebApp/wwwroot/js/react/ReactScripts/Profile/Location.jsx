@@ -65,20 +65,22 @@ export class Address extends React.Component {
 
         //Calls the updateProfileData function passed in as props in the accountProfile jsx
         //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+        //this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
         
         //close edit
         this.closeEdit()
     }
 
-    // NOTE The HandleChangeFunction should very closely resemble the function from the docs, because
-    //based on the types of elements (ie; dropdown, input, label) we use, for it to react to userinput
+     // NOTE The HandleChangeFunction should very closely resemble the function from the docs, because
+    //based on the types of elements (ie; dropdown, input, label), MAINLY INPUT we use, for it to react to userinput
     // the handlechange function given MUST be similar with the sae parameters, otherwise it will be confusing
+    //HANDLECHANGE FUNCTION CAN EITHER HAVE ONE PARAMETER OR IT CAN LOOK LIKE THIS "(e, { name, value })"
+    //if it deviates from how it's supposed to look like it wont work as intended
     handleChange(event, { name, value } ) {
-        //copies this.state.Address into data var
+        //Constantly at run time copies this.state.Address into data var
         const data = Object.assign({}, this.state.Address)
         console.log(name, value);
-        //modifies the value of the specific property in the data array
+        //Constantly at run time modifies the value of the specific property in the data array
         data[name] = value
         this.setState({
             //sets the state and UPDATES the Address var in state
@@ -120,6 +122,7 @@ export class Address extends React.Component {
 
         var Country = []
         var City = []
+
         //selectedCountry is set to be the value of this.state.Address.country, which ends up getting
         //filled the minute you click on a country option in the dropdown box. This is via the Handlechange func
         //called via the onchange tag, which updates the variables in the state. which means this.state.Address.country
@@ -254,6 +257,7 @@ export class Nationality extends React.Component {
             CData: Countrydata,
             showEditSection: false,
             Nationality: details,      //details is asigned to a var that can be changed in state
+           
 
             //not used
             updateProfile: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
@@ -295,34 +299,42 @@ export class Nationality extends React.Component {
 
         //Calls the updateProfileData function passed in as props in the accountProfile jsx
         //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+        //this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
 
         //close edit
         this.closeEdit()        
     }
 
     // NOTE The HandleChangeFunction should very closely resemble the function from the docs, because
-    //based on the types of elements (ie; dropdown, input, label) we use, for it to react to userinput
+    //based on the types of elements (ie; dropdown, input, label), MAINLY INPUT we use, for it to react to userinput
     // the handlechange function given MUST be similar with the sae parameters, otherwise it will be confusing
+    //HANDLECHANGE FUNCTION CAN EITHER HAVE ONE PARAMETER OR IT CAN LOOK LIKE THIS "(e, { name, value })"
+    //if it deviates from how it's supposed to look like it wont work as intended
     handleChange(event, { name, value }) {
-        //copies this.state.Address into data var
+        //Constantly at run time copies this.state.Address into data var
         const data = Object.assign({}, this.state.Nationality)
-        //modifies the value of the specific property in the data array
+        //Constantly at run time modifies the value of the specific property in the data array
         data[name] = value
         this.setState({
             //sets the state and UPDATES the Nationality var in state
-            Nationality: data
+            Nationality: data,
+            
         })
+
+        console.log(this.state.Nationality)
+
         //Saves the data too
         this.saveDetails();
     }
 
 
-    renderDisplay() {       
-
+    renderDisplay() {
+        //FIX THIS!!!!!
+        var nationality = this.state.Nationality.toString()
+    
         return (
             <div className='row'>
-                <div className="ui six wide column">
+                <div className="ui eight wide column">
                     <React.Fragment>     
                             <div className="six wide column">                               
                                 <Dropdown                               
@@ -334,6 +346,9 @@ export class Nationality extends React.Component {
                             />
                         </div>
                     </React.Fragment>                   
+                </div>
+                <div className="ui six wide column">
+                    {<p>Selected Nationality:{nationality}</p> }
                 </div>
             </div>
         )
@@ -359,6 +374,7 @@ export class Nationality extends React.Component {
 
         return (
             <div className='row'>
+                
                 <div className="ui six wide column">
                     <React.Fragment>
                         <div className="six wide column">
@@ -371,6 +387,8 @@ export class Nationality extends React.Component {
                                 onChange={this.handleChange}    // handles the selected options & saves it after clicking
                             />
                         </div>
+                        
+                       
                     </React.Fragment>
                 </div>
             </div>

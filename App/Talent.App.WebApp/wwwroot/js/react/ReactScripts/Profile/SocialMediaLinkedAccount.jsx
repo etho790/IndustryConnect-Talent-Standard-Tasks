@@ -51,17 +51,23 @@ export default class SocialMediaLinkedAccount extends React.Component {
         const data = Object.assign({}, this.state.linkedAccs)
         //Calls the saveprofiledata function passed in as props in the accountProfile jsx
         //the saveprofiledata calls a function that takes 1 argument. and the argument passed in data
-        this.props.saveProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+        //this.props.saveProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
         //close edit
         this.closeEdit()
     }
-
+     // NOTE The HandleChangeFunction should very closely resemble the function from the docs, because
+    //based on the types of elements (ie; dropdown, input, label), MAINLY INPUT we use, for it to react to userinput
+    // the handlechange function given MUST be similar with the sae parameters, otherwise it will be confusing
+    //HANDLECHANGE FUNCTION CAN EITHER HAVE ONE PARAMETER OR IT CAN LOOK LIKE THIS "(e, { name, value })"
+    //if it deviates from how it's supposed to look like it wont work as intended
     handleChange(event) {
         
-        //copies this.state.linkedAccounts into data var
+        //Constantly at run time copies this.state.linkedAccounts into data var
         const data = Object.assign({}, this.state.linkedAccs)
         //modifies the value of the specific property in the data array
         data[event.target.name] = event.target.value
+
+        //Constantly at run time updates the specific properties in the intended state variable
         this.setState({
             //sets the state and modifies the linkedaccount var in state
             linkedAccs: data

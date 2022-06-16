@@ -55,11 +55,16 @@ export class IndividualDetailSection extends Component {
         })
     }
 
+    // NOTE The HandleChangeFunction should very closely resemble the function from the docs, because
+    //based on the types of elements (ie; dropdown, input, label), MAINLY INPUT we use, for it to react to userinput
+    // the handlechange function given MUST be similar with the sae parameters, otherwise it will be confusing
+    //HANDLECHANGE FUNCTION CAN EITHER HAVE ONE PARAMETER OR IT CAN LOOK LIKE THIS "(e, { name, value })"
+    //if it deviates from how it's supposed to look like it wont work as intended
     handleChange(event, { name, value }) {
-        //copies this.state.newContact.details into data var
+        //Constantly at run time copies this.state.newContact.details into data var
         const data = Object.assign({}, this.state.newContact)        
 
-        //modifies the value of the specific property in the data array
+        //Constantly at run time modifies the value of the specific property in the data array
         data[name] = value
 
         //This is how you set properties of an object in state.
@@ -75,7 +80,7 @@ export class IndividualDetailSection extends Component {
         const data = Object.assign({}, this.state.newContact)
         //Calls the updateProfileData function passed in as props in the accountProfile jsx
         //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        this.state.updateProfile(data)  //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+        //this.state.updateProfile(data)  //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
          //close edit
         this.closeEdit()
     }

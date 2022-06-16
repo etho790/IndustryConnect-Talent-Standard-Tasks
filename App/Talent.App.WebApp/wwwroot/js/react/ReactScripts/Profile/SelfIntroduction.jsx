@@ -31,14 +31,18 @@ export default class SelfIntroduction extends React.Component {
     };
 
    
-    // NOTE The HandleChangeFunction should very closely resemble the function from the docs, because
-    //based on the types of elements (ie; dropdown, input, label) we use, for it to react to userinput
+    //NOTE The HandleChangeFunction should very closely resemble the function from the docs, because
+    //based on the types of elements (ie; dropdown, input, label), MAINLY INPUT we use, for it to react to userinput
     // the handlechange function given MUST be similar with the sae parameters, otherwise it will be confusing
+    //HANDLECHANGE FUNCTION CAN EITHER HAVE ONE PARAMETER OR IT CAN LOOK LIKE THIS "(e, { name, value })"
+    //if it deviates from how it's supposed to look like it wont work as intended
     handleChange(event, { name, value }) {
-        //copies this.state.SelfDescription into data var
+        //Constantly at run time copies this.state.SelfDescription into data var
         const data = Object.assign({}, this.state.SelfDescription)
-        //modifies the value of the specific property in the data array
+        //Constantly at run timemodifies the value of the specific property in the data array
         data[name] = value
+
+        //Constantly at run time updates the specific properties in the intended state variable
         this.setState({
             //sets the state and modifies the SelfDescription var in state
             SelfDescription: data
@@ -52,7 +56,7 @@ export default class SelfIntroduction extends React.Component {
 
         //Calls the updateProfileData function passed in as props in the accountProfile jsx
         //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+        //this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
     }
 
 

@@ -68,9 +68,7 @@ export default class Language extends React.Component {
                 name: data['name'],
                 level: data['level']
             }
-        })
-
-       
+        })       
     }
 
     saveDetails() {
@@ -87,12 +85,10 @@ export default class Language extends React.Component {
             Languages: [...this.state.Languages, data['name']]      
         })        
         
-        console.log("the Languages array", this.state.Languages)
-
 
         //Calls the updateProfileData function passed in as props in the accountProfile jsx
         //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        this.props.updateProfileData(this.state.Languages)   
+        //this.props.updateProfileData(this.state.Languages) OR this.props.updateProfileData(this.state.newLanguage)
         
         //close edit
         this.closeEdit()
@@ -119,7 +115,7 @@ export default class Language extends React.Component {
     
     SaveUpdatedChanges(){
 
-        //gets all the entries in newLanguage and fills the languagesdataArray
+        //gets all the entries in newLanguage and fills the languagesdataArray, to later update the specific updated entry
         let languagesdataArray = [...this.state.newLanguage];
         //copies the updated this.state.TempLanguageVar into UpdatedLanguagedata var 
         //to later update the specific entry of the languagesdataArray
@@ -147,7 +143,7 @@ export default class Language extends React.Component {
 
         //Calls the updateProfileData function passed in as props in the accountProfile jsx
         //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        this.props.updateProfileData(this.state.Languages)
+        //this.props.updateProfileData(this.state.Languages) OR this.props.updateProfileData(this.state.newLanguage)
         
     }
 
@@ -232,8 +228,7 @@ export default class Language extends React.Component {
    
 
 
-    renderDisplay() {
-        
+    renderDisplay() {       
 
         const languages = this.state.newLanguage ? this.state.newLanguage : [];
         // LanguageDataforTable (local variable) is being populated to loop through and fill our table
@@ -302,7 +297,7 @@ export default class Language extends React.Component {
                                                 </select>
                                             </div>
                                             : CurrentLanguage.level
-                                    }{/*if the update pencil buttons not clicked just display the CurrentLanguage.name*/}
+                                        }{/*if the update pencil buttons not clicked just display the CurrentLanguage.level*/}
                                                 
                                     
                                     </Table.Cell>

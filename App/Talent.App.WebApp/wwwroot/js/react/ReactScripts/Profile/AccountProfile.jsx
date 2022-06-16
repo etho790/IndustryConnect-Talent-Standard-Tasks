@@ -250,10 +250,10 @@ export default class AccountProfile extends React.Component {
                                             title='Skills'
                                             tooltip='List your skills'
                                         >
-                                            {/*<Skill
+                                            <Skill
                                                 skillData={this.state.profileData.skills}
                                                 updateProfileData={this.updateAndSaveData}
-                                            />*/}
+                                            />
                                         </FormItemWrapper>
                                         <FormItemWrapper
                                             title='Work experience'
@@ -264,15 +264,7 @@ export default class AccountProfile extends React.Component {
                                                 updateProfileData={this.updateAndSaveData}
                                             />*/}
                                         </FormItemWrapper>
-                                        <FormItemWrapper
-                                            title='Education'
-                                            tooltip='Add your educational background'
-                                        >
-                                            {/*<Education
-                                                educationData={this.state.profileData.education}
-                                                updateProfileData={this.updateAndSaveData}
-                                            />*/}
-                                        </FormItemWrapper>
+                                        
                                         <FormItemWrapper
                                             title='Visa Status'
                                             tooltip='What is your current Visa/Citizenship status?'
@@ -287,35 +279,36 @@ export default class AccountProfile extends React.Component {
                                             title='Status'
                                             tooltip='What is your current status in jobseeking?'
                                         >
-                                            {/*<TalentStatus
+                                            <TalentStatus
                                                 status={this.state.profileData.jobSeekingStatus}
                                                 updateProfileData={this.updateWithoutSave}
                                                 saveProfileData={this.updateAndSaveData}
-                                            />*/}
+                                            />
                                         </FormItemWrapper>
                                         <FormItemWrapper
                                             title='Profile Photo'
                                             tooltip='Please upload your profile photo'
-                                            hideSegment={true}
+                                            
                                         >
-                                            {/*<PhotoUpload
+                                            <PhotoUpload
                                                 imageId={this.state.profileData.profilePhotoUrl}
                                                 updateProfileData={this.updateWithoutSave}
                                                 savePhotoUrl='http://localhost:60290/profile/profile/updateProfilePhoto'
-                                            />*/}
+                                            />
                                         </FormItemWrapper>
-                                        <FormItemWrapper
+                                        {/*
+                                            <FormItemWrapper
                                             title='Profile Video'
                                             tooltip='Upload a brief self-introduction video'
                                             hideSegment={true}
                                         >
-                                            {/*<VideoUpload
+                                            {<VideoUpload
                                                 videoName={this.state.profileData.videoName}
                                                 updateProfileData={this.updateWithoutSave}
                                                 saveVideoUrl={'http://localhost:60290/profile/profile/updateTalentVideo'}
-                                            />*/}
+                                            />}
                                         </FormItemWrapper>
-                                                                               
+                                        */}
                                        
                                     </div>
                                 </form>
