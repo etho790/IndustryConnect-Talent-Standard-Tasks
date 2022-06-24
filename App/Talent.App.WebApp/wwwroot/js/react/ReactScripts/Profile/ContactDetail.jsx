@@ -23,9 +23,7 @@ export class IndividualDetailSection extends Component {
             newContact: dets,//NOTE: the best way to know for sure as to what you're accessing in state is
                             //to console.log to see if we are accessing the properties correctly
 
-            //not used
-            updateProfile: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
-            saveProfile: props.saveProfileData    //props.saveProfileData is asigned to a var that can be changed in state
+           saveProfile: props.saveProfileData    //props.saveProfileData is asigned to a var that can be changed in state
 
         }
 
@@ -78,11 +76,12 @@ export class IndividualDetailSection extends Component {
     saveDetails() {
        //copies this.state.newContact into data var
         const data = Object.assign({}, this.state.newContact)
-        //Calls the updateProfileData function passed in as props in the accountProfile jsx
-        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.state.updateProfile(data)  //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+
+        //Calls the saveProfileData function passed in as props in the accountProfile jsx
+        //the saveProfileData calls a function that takes 1 argument. and the argument passed in data
+        this.state.saveProfile(data)  //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
          //close edit
-        this.closeEdit()
+        this.closeEdit()        
     }
 
     render() {

@@ -44,6 +44,7 @@ export default class Language extends React.Component {
         this.ClicktoUpdateFunc = this.ClicktoUpdateFunc.bind(this)
         this.HandleUpdatedChange = this.HandleUpdatedChange.bind(this)
         this.SaveUpdatedChanges = this.SaveUpdatedChanges.bind(this)
+        this.DeleteUpdatedChanges = this.DeleteUpdatedChanges.bind(this)
     }
 
    
@@ -86,10 +87,9 @@ export default class Language extends React.Component {
         })        
         
 
-        //Calls the updateProfileData function passed in as props in the accountProfile jsx
-        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.props.updateProfileData(this.state.Languages) OR this.props.updateProfileData(this.state.newLanguage)
-        
+        //SAVING TO BACKEND!!!!!!
+        this.props.controlFunc("languages", this.state.Languages)
+
         //close edit
         this.closeEdit()
     }
@@ -141,12 +141,11 @@ export default class Language extends React.Component {
             update:false
         })
 
-        //Calls the updateProfileData function passed in as props in the accountProfile jsx
-        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.props.updateProfileData(this.state.Languages) OR this.props.updateProfileData(this.state.newLanguage)
-        
+        //SAVING TO BACKEND!!!!!!
+        this.props.controlFunc("languages", this.state.Languages)
+       
     }
-
+    
 
     closeEdit() {
         this.setState({
@@ -200,7 +199,33 @@ export default class Language extends React.Component {
 
     }
 
-   
+    //DELETES SELECTED ELEMENT
+    DeleteUpdatedChanges(e, id) {
+        //gets all the entries in newLanguage and fills the languagesdataArray, to later update the specific updated entry
+        let languagesdataArray = [...this.state.newLanguage];
+
+        //remove current entry in languagesdataArray based on the CurrentLanguage.id
+        languagesdataArray.splice(id, 1)
+
+        //this array is to update our Language array in state that only holds the names of the Languages
+        let LanguageArray = []
+        for (var i = 0; i < languagesdataArray.length; i++) {
+            LanguageArray.push(languagesdataArray[i].name)
+        }
+
+        this.setState({
+            //update the state of newLanguage
+            newLanguage: languagesdataArray,
+            //updated Languages to equal the new updated LanguageArray
+            Languages: LanguageArray,
+        })
+
+        console.log("Languages array", this.state.Languages)
+        console.log("newLanguage array", this.state.newLanguage)
+
+        //SAVING TO BACKEND!!!!!!
+        this.props.controlFunc("languages", this.state.Languages)
+    }
     
     ClicktoUpdateFunc(e, UPDATE, id) {
         //This function is responsible for PRIMARILY changing the update variable & for getting the this.state.TempLanguageVar.id
@@ -318,7 +343,7 @@ export default class Language extends React.Component {
                                                 :
                                                 <React.Fragment>
                                                     <Icon name='pencil' onClick={() => (this.ClicktoUpdateFunc(this, true, CurrentLanguage.id))} />
-                                                    <Icon name='delete' onClick={null} />
+                                                    <Icon name='delete' onClick={() => (this.DeleteUpdatedChanges(this, CurrentLanguage.id))} />
                                                 </React.Fragment>
                                               }
                                         </React.Fragment>

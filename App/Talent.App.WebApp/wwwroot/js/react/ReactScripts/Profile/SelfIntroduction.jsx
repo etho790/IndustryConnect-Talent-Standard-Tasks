@@ -18,8 +18,6 @@ export default class SelfIntroduction extends React.Component {
         this.state = {
             SelfDescription: Dets,
 
-            //not used
-            updateProfile: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
             saveProfile: props.saveProfileData, //props.saveProfileData is asigned to a var that can be changed in state
 
         }
@@ -54,9 +52,9 @@ export default class SelfIntroduction extends React.Component {
         //copies this.state.SelfDescription into data var
         const data = Object.assign({}, this.state.SelfDescription)
 
-        //Calls the updateProfileData function passed in as props in the accountProfile jsx
-        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+        //Calls the saveProfileData function passed in as props in the accountProfile jsx
+        //the saveProfileData calls a function that takes 1 argument. and the argument passed in data
+        this.state.saveProfile(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
     }
 
 

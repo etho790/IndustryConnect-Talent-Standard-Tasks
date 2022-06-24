@@ -30,8 +30,6 @@ export default class Skill extends React.Component {
             SkillDataforTableArray: [], //this array will be populated with all the entries of newSkill AND will have a unique id for each
             update: false,
 
-            //not used
-            updateProfile: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
             saveProfile: props.saveProfileData, //props.saveProfileData is asigned to a var that can be changed in state
 
         }
@@ -88,9 +86,8 @@ export default class Skill extends React.Component {
         console.log("skills array",this.state.skills)
         console.log("newSkill array", this.state.newSkill)
 
-        //Calls the updateProfileData function passed in as props in the accountProfile jsx
-        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.props.updateProfileData(this.state.skills) OR this.props.updateProfileData(this.state.newSkill)
+        //SAVING TO BACKEND!!!!!!
+        this.props.controlFunc("skills", this.state.skills)
 
         //close edit
         this.closeEdit()
@@ -142,13 +139,10 @@ export default class Skill extends React.Component {
             update: false
         })
 
-        console.log("skills array", this.state.skills)
-        console.log("newSkill array", this.state.newSkill)
 
+        //SAVING TO BACKEND!!!!!!
+        this.props.controlFunc("skills", this.state.skills)
 
-        //Calls the updateProfileData function passed in as props in the accountProfile jsx
-        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.props.updateProfileData(this.state.skills) OR this.props.updateProfileData(this.state.newSkill)
     }
 
     
@@ -229,9 +223,8 @@ export default class Skill extends React.Component {
         console.log("skills array", this.state.skills)
         console.log("newSkill array", this.state.newSkill)
 
-         //Calls the updateProfileData function passed in as props in the accountProfile jsx
-        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.props.updateProfileData(this.state.skills) OR this.props.updateProfileData(this.state.newSkill)
+        //SAVING TO BACKEND!!!!!!
+        this.props.controlFunc("skills", this.state.skills)
     }
 
 

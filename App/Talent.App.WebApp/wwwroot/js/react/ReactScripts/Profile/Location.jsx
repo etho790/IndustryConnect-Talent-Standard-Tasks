@@ -1,6 +1,6 @@
 ﻿import React from 'react'
 import Cookies from 'js-cookie'
-import { Dropdown, Form } from 'semantic-ui-react'
+import { Dropdown, Form, Select } from 'semantic-ui-react'
 import { ChildSingleInput } from '../Form/SingleInput.jsx';
 
 export class Address extends React.Component {
@@ -28,11 +28,7 @@ export class Address extends React.Component {
             CData: Countrydata,
             showEditSection: false,            
             Address: details,      //details is asigned to a var that can be changed in state
-
-            //not used
-            updateProfile: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
-            saveProfile: props.saveProfileData, //props.saveProfileData is asigned to a var that can be changed in state
-            
+                       
         }
 
        
@@ -63,12 +59,13 @@ export class Address extends React.Component {
         //copies this.state.Address into data var
         const data = Object.assign({}, this.state.Address)
 
-        //Calls the updateProfileData function passed in as props in the accountProfile jsx
-        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
-        
+        //Calls the controlFunc function passed in as props in the accountProfile jsx
+        //the controlFunc calls a function that takes 2 arguments, ONE: the NAME of the object
+        //and the data values needed to update the exact object in the back end     
+        this.props.controlFunc('address', data);
         //close edit
-        this.closeEdit()
+        this.closeEdit()         
+        
     }
 
      // NOTE The HandleChangeFunction should very closely resemble the function from the docs, because
@@ -79,13 +76,14 @@ export class Address extends React.Component {
     handleChange(event, { name, value } ) {
         //Constantly at run time copies this.state.Address into data var
         const data = Object.assign({}, this.state.Address)
-        console.log(name, value);
+        
         //Constantly at run time modifies the value of the specific property in the data array
         data[name] = value
         this.setState({
             //sets the state and UPDATES the Address var in state
             Address: data
-        })        
+        })
+        console.log(name, value);
     }
 
     render() {
@@ -254,53 +252,46 @@ export class Nationality extends React.Component {
 
         var Countrydata = require('../../../../util/jsonFiles/countries.json')
         this.state = {
-            CData: Countrydata,
-            showEditSection: false,
+            CData: Countrydata,           
             Nationality: details,      //details is asigned to a var that can be changed in state
-           
+            showSaveButton: false,
 
-            //not used
-            updateProfile: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
-            saveProfile: props.saveProfileData, //props.saveProfileData is asigned to a var that can be changed in state
+           saveProfile: props.saveProfileData, //props.saveProfileData is asigned to a var that can be changed in state
 
         }
       
         this.openEdit = this.openEdit.bind(this)
         this.closeEdit = this.closeEdit.bind(this)
-        this.renderDisplay = this.renderDisplay.bind(this)
+        
         this.handleChange = this.handleChange.bind(this)
         this.saveDetails = this.saveDetails.bind(this)
-        this.renderDisplay = this.renderDisplay.bind(this)
+       
     }
     
     openEdit() {
         
         this.setState({
-            showEditSection: true,
+            
+            showSaveButton: true,
         })
     }
 
     closeEdit() {
-        this.setState({
-            showEditSection: false
+        this.setState({           
+            showSaveButton: false,
         })
     }
-
-    render() {
-        return (
-            this.state.showEditSection ? this.renderEdit() : this.renderDisplay()
-        )
-    }
-
+      
     saveDetails() {
         
         //copies this.state.Nationality into data var
         const data = Object.assign({}, this.state.Nationality)
 
-        //Calls the updateProfileData function passed in as props in the accountProfile jsx
-        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.props.updateProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+        //Calls the saveProfileData function passed in as props in the accountProfile jsx
+        //the saveProfileData calls a function that takes 1 argument. and the argument passed in data
+        this.state.saveProfile(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
 
+        
         //close edit
         this.closeEdit()        
     }
@@ -322,76 +313,42 @@ export class Nationality extends React.Component {
         })
 
         console.log(this.state.Nationality)
-
-        //Saves the data too
-        this.saveDetails();
+        this.openEdit()
     }
 
-
-    renderDisplay() {
-        //FIX THIS!!!!!
-        var nationality = this.state.Nationality.toString()
-    
-        return (
-            <div className='row'>
-                <div className="ui eight wide column">
-                    <React.Fragment>     
-                            <div className="six wide column">                               
-                                <Dropdown                               
-                                    selection
-                                    name="nationality"
-                                    placeholder="Select your nationality"
-                                    options={null}
-                                    onClick={this.openEdit}    // the minute you click
-                            />
-                        </div>
-                    </React.Fragment>                   
-                </div>
-                <div className="ui six wide column">
-                    {<p>Selected Nationality:{nationality}</p> }
-                </div>
-            </div>
-        )
-
-    }
-
-
-    renderEdit() {
+    render(){
+     
         var Nationale = []
-
-        // It is important to note the the value tag for the dropdown box is useless
-        //it might as well be null and it wouldnt matter, as the actual value stored as you click on any option
-        //it is automatically received via the handlechange func
-        
-
         Nationale = Object.keys(this.state.CData).map((index) => ({
             key: index,
             value: index,
             text: index,
         }))
-
-        
+        let saveButton = this.state.showSaveButton
+            ? <div className='ui two wide column'>
+                <button type="button" className="ui right floated teal button" onClick={this.saveDetails}>Save</button>
+            </div>
+            : undefined;
 
         return (
             <div className='row'>
-                
-                <div className="ui six wide column">
-                    <React.Fragment>
-                        <div className="six wide column">
-                            <Dropdown
-                                search                                
-                                selection
-                                options={Nationale}
-                                placeholder="Select your nationality"                                
-                                name="nationality"                                
-                                onChange={this.handleChange}    // handles the selected options & saves it after clicking
-                            />
+                <div className='ui fourteen wide column'>
+                        <div className='ui grid'>
+                            <div className='five wide column'>
+                                <Select
+                                    className="ui right labeled dropdown"
+                                    placeholder="Select Your Nationality"                            
+                                    onChange={this.handleChange}
+                                    name="nationality"
+                                    options={Nationale}/>   
+                            </div>                    
                         </div>
-                        
-                       
-                    </React.Fragment>
                 </div>
+
+                {saveButton}
+
             </div>
-        )
+        );
     }
+    
 }

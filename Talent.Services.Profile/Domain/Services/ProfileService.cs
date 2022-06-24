@@ -25,6 +25,8 @@ namespace Talent.Services.Profile.Domain.Services
         IRepository<Recruiter> _recruiterRepository;
         IFileService _fileService;
 
+        private readonly IMongoDatabase _database;
+        private IMongoCollection<User> _collection => _database.GetCollection<User>(typeof(User).Name);
 
         public ProfileService(IUserAppContext userAppContext,
                               IRepository<UserLanguage> userLanguageRepository,
@@ -32,7 +34,9 @@ namespace Talent.Services.Profile.Domain.Services
                               IRepository<Employer> employerRepository,
                               IRepository<Job> jobRepository,
                               IRepository<Recruiter> recruiterRepository,
-                              IFileService fileService)
+                              IFileService fileService,
+                              IMongoDatabase database)//added
+
         {
             _userAppContext = userAppContext;
             _userLanguageRepository = userLanguageRepository;
@@ -41,6 +45,7 @@ namespace Talent.Services.Profile.Domain.Services
             _jobRepository = jobRepository;
             _recruiterRepository = recruiterRepository;
             _fileService = fileService;
+            _database = database;
         }
 
         public bool AddNewLanguage(AddLanguageViewModel language)
@@ -79,11 +84,7 @@ namespace Talent.Services.Profile.Domain.Services
                 ProfilePhotoUrl = user.ProfilePhotoUrl,
                 VideoName = user.VideoName,
                 VideoUrl = videoUrl,
-                /*Certifications = user.Certifications,
-                Experience = user.Experience,
-                Education = user.Education,
-                Skills = user.Skills                               
-                */
+                
             };
 
             return result;

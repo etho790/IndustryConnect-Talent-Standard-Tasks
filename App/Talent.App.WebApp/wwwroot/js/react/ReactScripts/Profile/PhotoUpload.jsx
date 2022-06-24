@@ -8,12 +8,18 @@ export default class PhotoUpload extends Component {
     constructor(props) {
         super(props);
 
-        //dont need to get anything from the props apart from the function call when you uplos the picture
-       
+        // if props.ProfilePic is true (not null) return (or execute) Object.assign({}, props.ProfilePic) & Picture = it
+        // otherwise make Picture = null
+        const Picture = props.ProfilePic ?
+            Object.assign({}, props.ProfilePic) : null
+            
+
         this.state = {
             fileUploadState: null,
-            selectedFile: null
+            selectedFile: Picture
         }
+
+        
 
         this.handleChange = this.handleChange.bind(this);
         this.onFileUpload  = this.onFileUpload .bind(this);
@@ -59,17 +65,18 @@ export default class PhotoUpload extends Component {
         );
 
         // Details of the uploaded file
-        console.log(this.state.selectedFile);
-
-        //Calls the updateProfileData function passed in as props in the accountProfile jsx
-        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.props.updateProfileData(this.state.selectedFile)
         
+        
+        //SEND TO THE BACKEND FUNCTION, specifies the name of the attribute and sends it to the backend
+        //since the name isn't gotten from the element at all, we give it a name via the controlFunc function and pass it 
+        //on to the backend
+        this.props.controlFunc("profilePhoto", this.state.selectedFile)
+
     };
 
 
     render() {      
-
+        //console.log("this is the file!!!!!", this.state.selectedFile);
         return (
             <div className='ui sixteen wide column'>
 

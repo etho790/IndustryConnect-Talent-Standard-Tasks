@@ -10,14 +10,15 @@ export default class TalentStatus extends React.Component {
         // otherwise make Dets = the empty array 
         const Dets = props.status ?
             Object.assign({}, props.status) : {
-                status: "",
-                availableDate: null
+                jobSeekingStatus: "",                
             }
 
+        
 
         this.state = {
+            newJobStatus: Dets,
             showEditSection: false,
-            newJobStatus: Dets
+            
         }
 
 
@@ -26,10 +27,11 @@ export default class TalentStatus extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.saveJobSeekingStatus = this.saveJobSeekingStatus.bind(this);
 
+
+        
     }
 
     openEdit() {
-
         this.setState({
             showEditSection: true,
             
@@ -56,15 +58,14 @@ export default class TalentStatus extends React.Component {
         this.setState({//sets the state and UPDATES the newJobStatus var in state
             newJobStatus: data
         });
-        console.log(data)
+        
     }
 
     saveJobSeekingStatus() {
-        const data = Object.assign({}, this.state.newJobStatus);
-
-        //Calls the updateProfileData function passed in as props in the accountProfile jsx
-        //the updateProfileData calls a function that takes 1 argument. and the argument passed in data
-        //this.props.updateProfileData( data);
+       
+        //SEND TO THE BACKEND FUNCTION
+        //this.props.controlFunc("", this.state.newJobStatus)
+        this.props.saveProfileData( this.state.newJobStatus)
 
         this.closeEdit();
     }
@@ -76,6 +77,11 @@ export default class TalentStatus extends React.Component {
     }
 
     renderEdit() {
+        //this.state.newJobStatus is an object with the attribute 'jobSeekingStatus' determined by the name tag
+        //in this checkbox element, and has a value based on what you click on determined by the handlechange function
+        //given to the onChange tag. so it looks like this {jobSeekingStatus: "......"}, which means to access or manipulate
+        //values like always of a particular attribute we have to go to 'this.state.object.attributename' which is exactly
+        //how we are checking for the values on the checked tag.
 
         return (
             <div className="ui sixteen wide column">
@@ -87,9 +93,9 @@ export default class TalentStatus extends React.Component {
                     <Checkbox
                         radio
                         label='Actively loooking for job'
-                        name='status'
+                        name='jobSeekingStatus'
                         value='Actively loooking for job'
-                        checked={this.state.newJobStatus.status === 'Actively loooking for job'}
+                        checked={this.state.newJobStatus.jobSeekingStatus === 'Actively loooking for job'}
                         onChange={this.handleChange}
                     />
                 </div>
@@ -97,9 +103,9 @@ export default class TalentStatus extends React.Component {
                     <Checkbox
                         radio
                         label='Not looking for a job at the moment'
-                        name='status'
+                        name='jobSeekingStatus'
                         value='Not looking for a job at the moment'
-                        checked={this.state.newJobStatus.status === 'Not looking for a job at the moment'}
+                        checked={this.state.newJobStatus.jobSeekingStatus === 'Not looking for a job at the moment'}
                         onChange={this.handleChange}
                     />
                 </div>
@@ -107,9 +113,9 @@ export default class TalentStatus extends React.Component {
                     <Checkbox
                         radio
                         label='Currently employed but open to offers'
-                        name='status'
+                        name='jobSeekingStatus'
                         value='Currently employed but open to offers'
-                        checked={this.state.newJobStatus.status === 'Currently employed but open to offers'}
+                        checked={this.state.newJobStatus.jobSeekingStatus === 'Currently employed but open to offers'}
                         onChange={this.handleChange}
                     />
                 </div>
@@ -117,9 +123,9 @@ export default class TalentStatus extends React.Component {
                     <Checkbox
                         radio
                         label='Will be available on later date'
-                        name='status'
+                        name='jobSeekingStatus'
                         value='Will be available on later date'
-                        checked={this.state.newJobStatus.status === 'Will be available on later date'}
+                        checked={this.state.newJobStatus.jobSeekingStatus === 'Will be available on later date'}
                         onChange={this.handleChange}
                     />
                 </div>
@@ -134,20 +140,13 @@ export default class TalentStatus extends React.Component {
 
     renderDisplay() {
 
-        const jobSeekingStatus = this.state.newJobStatus ? this.state.newJobStatus : { status: 'N/A', availableDate: '' }
-
-        var availableDateSection;
-        if (jobSeekingStatus.availableDate !== '') {
-            availableDateSection = <p>{jobSeekingStatus.availableDate}</p>
-            
-        }
+        const jobSeekingStatus = this.state.newJobStatus ? this.state.newJobStatus : ""
 
         return (
             <div className="ui sixteen wide column">
                 <React.Fragment>
-                    {/*updates both the status and the availableDate*/}
-                    <p>Current Status: {jobSeekingStatus.status}</p>
-                    {availableDateSection}
+                    {/*updates both the status */}
+                    {"jobSeekingStatus: ",jobSeekingStatus.jobSeekingStatus}
                     
 
                 </React.Fragment>

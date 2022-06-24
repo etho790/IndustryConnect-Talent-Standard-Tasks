@@ -9,14 +9,22 @@ export default class SocialMediaLinkedAccount extends React.Component {
     constructor(props) {
         super(props);       
 
+        // if props.linkedAccounts is true (not null) return (or execute) Object.assign({}, props.linkedAccounts) & Dets = it
+        // otherwise make Dets = the empty array 
+        const Dets = props.linkedAccounts ?
+            Object.assign({}, props.linkedAccounts) : {
+                linkedIn: "",
+                github: ""
+            }
+
+
+
         this.state = {
             //IN THE STATE, YOU CREATE VARIABLES THAT CAN ONLY BE AFFECTED IN THE STATE, SO TO CHANGE THEM
             //OUTSIDE OF THE CONSTRUCTOR YOU MUST USE SET.STATE 
             showEditSection: false,           
-            linkedAccs: props.linkedAccounts,      //props.linkedAccounts is asigned to a var that can be changed in state
-            updateProfile: props.updateProfileData, //props.updateProfileData is asigned to a var that can be changed in state
-            saveProfile: props.saveProfileData, //props.saveProfileData is asigned to a var that can be changed in state
-        }
+            linkedAccs: Dets,      //props.linkedAccounts is asigned to a var that can be changed in state
+            }
 
 
         this.renderEdit = this.renderEdit.bind(this)
@@ -49,9 +57,12 @@ export default class SocialMediaLinkedAccount extends React.Component {
     saveDetails() {
         //copies this.state.linkedAccounts into data var
         const data = Object.assign({}, this.state.linkedAccs)
+
+
         //Calls the saveprofiledata function passed in as props in the accountProfile jsx
         //the saveprofiledata calls a function that takes 1 argument. and the argument passed in data
-        //this.props.saveProfileData(data)    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+        this.props.controlFunc('linkedAccounts', data);    //MUST HAVE THE POST METHOD WORKING TO MAKE THE SAVE BUTTON WORK
+
         //close edit
         this.closeEdit()
     }
@@ -72,7 +83,8 @@ export default class SocialMediaLinkedAccount extends React.Component {
             //sets the state and modifies the linkedaccount var in state
             linkedAccs: data
         })
-        
+
+      
     }
 
     render(){
