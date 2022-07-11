@@ -88,7 +88,7 @@ export default class Language extends React.Component {
         
 
         //SAVING TO BACKEND!!!!!!
-        this.props.controlFunc("languages", this.state.Languages)
+        this.props.controlFunc("languages", this.state.newLanguage)
 
         //close edit
         this.closeEdit()
@@ -142,7 +142,7 @@ export default class Language extends React.Component {
         })
 
         //SAVING TO BACKEND!!!!!!
-        this.props.controlFunc("languages", this.state.Languages)
+        this.props.controlFunc("languages", this.state.newLanguage)
        
     }
     
@@ -224,7 +224,7 @@ export default class Language extends React.Component {
         console.log("newLanguage array", this.state.newLanguage)
 
         //SAVING TO BACKEND!!!!!!
-        this.props.controlFunc("languages", this.state.Languages)
+        this.props.controlFunc("languages", this.state.newLanguage)
     }
     
     ClicktoUpdateFunc(e, UPDATE, id) {

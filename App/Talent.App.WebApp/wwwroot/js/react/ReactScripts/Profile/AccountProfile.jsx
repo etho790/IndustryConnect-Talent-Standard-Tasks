@@ -276,7 +276,7 @@ export default class AccountProfile extends React.Component {
                                         >
                                             <PhotoUpload
                                                 ProfilePic={this.state.profileData.profilePhoto}
-                                                imageId={this.state.profileData.profilePhotoUrl}                                              
+                                                imageId={this.state.profileData.profilePhoto}
                                                 controlFunc={this.updateForComponentId}
                                                 savePhotoUrl='http://localhost:60290/profile/profile/updateProfilePhoto'
                                                //code is correct as to how its passed in but the update of the backend data doesnt work properly

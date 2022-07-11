@@ -137,64 +137,102 @@ namespace Talent.Services.Profile.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
         public async Task<IActionResult> GetLanguages()
         {
-            //Your code here;
-            throw new NotImplementedException();
+            var languages = (await _profileService.GetLanguages());
+            return Json(new { Success = true, data = languages });
+
         }
 
         [HttpPost("addLanguage")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
         public ActionResult AddLanguage([FromBody] AddLanguageViewModel language)
         {
-            //Your code here;
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                if (_profileService.AddNewLanguage(language))
+                {
+                    return Json(new { Success = true });
+
+                }
+            }
+            return Json(new { Success = false });
         }
 
         [HttpPost("updateLanguage")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
         public async Task<ActionResult> UpdateLanguage([FromBody] AddLanguageViewModel language)
         {
-            //Your code here;
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                if (await _profileService.updateLanguage(language))
+                {
+                    return Json(new { Success = true });
+                }
+            }
+            return Json(new { Success = false });
         }
 
         [HttpPost("deleteLanguage")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
         public async Task<ActionResult> DeleteLanguage([FromBody] AddLanguageViewModel language)
         {
-            //Your code here;
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                if (await _profileService.deleteLanguage(language))
+                {
+                    return Json(new { Success = true });
+                }
+            }
+            return Json(new { Success = false });
         }
 
         [HttpGet("getSkill")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
         public async Task<IActionResult> GetSkills()
         {
-            //Your code here;
-            throw new NotImplementedException();
+            var skills = await _profileService.GetSkills();
+            return Json(new { Success = true, data = skills });
         }
 
         [HttpPost("addSkill")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
-        public ActionResult AddSkill([FromBody]AddSkillViewModel skill)
+        public async Task<ActionResult> AddSkill([FromBody] AddSkillViewModel skill)
         {
-            //Your code here;
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                if (await _profileService.AddSkill(skill))
+                {
+                    return Json(new { Success = true });
+                }
+            }
+            return Json(new { Success = false });
         }
 
         [HttpPost("updateSkill")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
-        public async Task<IActionResult> UpdateSkill([FromBody]AddSkillViewModel skill)
+        public async Task<IActionResult> UpdateSkill([FromBody] AddSkillViewModel skill)
         {
-            //Your code here;
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                if (await _profileService.UpdateSkill(skill))
+                {
+                    return Json(new { Success = true });
+                }
+            }
+            return Json(new { Success = false });
         }
 
         [HttpPost("deleteSkill")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
-        public async Task<IActionResult> DeleteSkill([FromBody]AddSkillViewModel skill)
+        public async Task<IActionResult> DeleteSkill([FromBody] AddSkillViewModel skill)
         {
-            //Your code here;
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+                if (await _profileService.DeleteSkill(skill))
+                {
+                    return Json(new { Success = true });
+                }
+            }
+            return Json(new { Success = false });
         }
 
         [HttpGet("getCertification")]
@@ -231,19 +269,56 @@ namespace Talent.Services.Profile.Controllers
 
         [HttpGet("getProfileImage")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public ActionResult getProfileImage(string Id)
+        public async Task<ActionResult> getProfileImage(string Id)
         {
-            var profileUrl = _documentService.GetFileURL(Id, FileType.ProfilePhoto);
+            try
+            {              
+                var userId = _userAppContext.CurrentUserId;
+                        User profile = await _userRepository.GetByIdAsync(userId);
+
+                        var uri = Request.Scheme.ToString() + "://" + Request.Host.ToString();
+
+                        var tempUrl = await _documentService.GetFileURL(profile.ProfilePhoto, FileType.ProfilePhoto);
+                        var profileUrl = Path.Combine(uri, tempUrl);
+                return Json(new { Success = true, data = profileUrl });
+            }
+            catch (Exception e)
+            {
+                 Console.WriteLine(  e.Message );
+                return Json(new { Success = false, data = Id });
+            }
+
+            
+
             //Please do logic for no image available - maybe placeholder would be fine
-            return Json(new { profilePath = profileUrl });
+            
         }
+
+
 
         [HttpPost("updateProfilePhoto")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
         public async Task<ActionResult> UpdateProfilePhoto()
         {
-            //Your code here;
-            throw new NotImplementedException();
+            if (ModelState.IsValid)
+            {
+
+                if (Request.Form.Files.Count == 1)
+                {
+                    IFormFile photo = Request.Form.Files[0];
+                    var userId = _userAppContext.CurrentUserId;
+                    if (await _profileService.UpdateTalentPhoto(userId, photo))
+                    {
+                        return Json(new { Success = true });
+                    }
+                    else
+                    {
+                        return Json(new { Success = false });
+                    }
+
+                }
+            }
+            return Json(new { Success = false });
         }
 
         [HttpPost("updateTalentCV")]
@@ -291,7 +366,7 @@ namespace Talent.Services.Profile.Controllers
 
         [HttpPost("addEducation")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
-        public IActionResult AddEducation([FromBody]AddEducationViewModel model)
+        public IActionResult AddEducation([FromBody] AddEducationViewModel model)
         {
             //Your code here;
             throw new NotImplementedException();
@@ -299,7 +374,7 @@ namespace Talent.Services.Profile.Controllers
 
         [HttpPost("updateEducation")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
-        public async Task<IActionResult> UpdateEducation([FromBody]AddEducationViewModel model)
+        public async Task<IActionResult> UpdateEducation([FromBody] AddEducationViewModel model)
         {
             //Your code here;
             throw new NotImplementedException();
@@ -313,7 +388,58 @@ namespace Talent.Services.Profile.Controllers
             throw new NotImplementedException();
         }
 
-     
+        [HttpGet("getExperience")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
+        public async Task<IActionResult> GetExperience()
+        {
+            var experiences = await _profileService.GetExperiences();
+
+            return Json(new { Success = true, data = experiences });
+        }
+
+        [HttpPost("addExperience")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
+        public async Task<IActionResult> AddExperience([FromBody] ExperienceViewModel experience)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await _profileService.AddExperience(experience))
+                {
+                    return Json(new { Success = true });
+                }
+            }
+            return Json(new { Success = false });
+        }
+        [HttpPost("updateExperience")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
+        public async Task<IActionResult> UpdateExperience([FromBody] ExperienceViewModel experience)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await _profileService.UpdateExperience(experience))
+                {
+                    return Json(new { Success = true });
+                }
+            }
+            return Json(new { Success = false });
+        }
+        [HttpPost("deleteExperience")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
+        public async Task<IActionResult> DeleteExperience([FromBody] ExperienceViewModel experience)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await _profileService.DeleteExperience(experience))
+                {
+                    return Json(new { Success = true });
+                }
+            }
+            return Json(new { Success = false });
+        }
+
+
+
+
         #endregion
 
         #region EmployerOrRecruiter
@@ -358,7 +484,7 @@ namespace Talent.Services.Profile.Controllers
             if (ModelState.IsValid)
             {
                 //check if employer is client 5be40d789b9e1231cc0dc51b
-                var recruiterClients =(await _recruiterRepository.GetByIdAsync(_userAppContext.CurrentUserId)).Clients;
+                var recruiterClients = (await _recruiterRepository.GetByIdAsync(_userAppContext.CurrentUserId)).Clients;
 
                 if (recruiterClients.Select(x => x.EmployerId == employer.Id).FirstOrDefault())
                 {
@@ -403,7 +529,7 @@ namespace Talent.Services.Profile.Controllers
             //Your code here;
             throw new NotImplementedException();
         }
-        
+
         #endregion
 
         #region TalentFeed
@@ -411,17 +537,16 @@ namespace Talent.Services.Profile.Controllers
         [HttpGet("getTalentProfile")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent, employer, recruiter")]
         public async Task<IActionResult> GetTalentProfile(String id = "")
-        {   
-            
+        {
             String talentId = String.IsNullOrWhiteSpace(id) ? _userAppContext.CurrentUserId : id;
             var userProfile = await _profileService.GetTalentProfile(talentId);
-          
+
             return Json(new { Success = true, data = userProfile });
         }
 
         [HttpPost("updateTalentProfile")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "talent")]
-        public async Task<IActionResult> UpdateTalentProfile([FromBody]TalentProfileViewModel profile)
+        public async Task<IActionResult> UpdateTalentProfile([FromBody] TalentProfileViewModel profile)
         {
             if (ModelState.IsValid)
             {
@@ -439,25 +564,26 @@ namespace Talent.Services.Profile.Controllers
         {
             try
             {
-                var result = (await _profileService.GetTalentSnapshotList(_userAppContext.CurrentUserId, false, feed.Position, feed.Number)).ToList();
+                var uri = Request.Scheme.ToString() + "://" + Request.Host.ToString();
+                var result = (await _profileService.GetTalentSnapshotList(_userAppContext.CurrentUserId, false, feed.Position, feed.Number, uri)).ToList();
 
                 // Dummy talent to fill out the list once we run out of data
-                //if (result.Count == 0)
-                //{
-                //    result.Add(
-                //            new Models.TalentSnapshotViewModel
-                //            {
-                //                CurrentEmployment = "Software Developer at XYZ",
-                //                Level = "Junior",
-                //                Name = "Dummy User...",
-                //                PhotoId = "",
-                //                Skills = new List<string> { "C#", ".Net Core", "Javascript", "ReactJS", "PreactJS" },
-                //                Summary = "Veronika Ossi is a set designer living in New York who enjoys kittens, music, and partying.",
-                //                Visa = "Citizen"
-                //            }
-                //        );
-                //}
-                return Json(new { Success = true, Data = result });
+                if (result.Count == 0)
+                {
+                    result.Add(
+                            new Models.TalentSnapshotViewModel
+                            {
+                                CurrentEmployment = "Software Developer at XYZ",
+                                Level = "Junior",
+                                Name = "Dummy User...",
+                                PhotoId = "",
+                                Skills = new List<string> { "C#", ".Net Core", "Javascript", "ReactJS", "PreactJS" },
+                                Summary = "Veronika Ossi is a set designer living in New York who enjoys kittens, music, and partying.",
+                                Visa = "Citizen"
+                            }
+                        );
+                }
+                return Json(new { Success = true, data = result });
             }
             catch (Exception e)
             {
@@ -500,7 +626,7 @@ namespace Talent.Services.Profile.Controllers
 
         [HttpPost("getEmployerListFilter")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "recruiter")]
-        public IActionResult GetEmployerListFilter([FromBody]SearchCompanyModel model)
+        public IActionResult GetEmployerListFilter([FromBody] SearchCompanyModel model)
         {
             try
             {
@@ -576,11 +702,11 @@ namespace Talent.Services.Profile.Controllers
         {
             try
             {
-                var result=await _profileService.GetClientListAsync(_userAppContext.CurrentUserId);
+                var result = await _profileService.GetClientListAsync(_userAppContext.CurrentUserId);
 
                 return Json(new { Success = true, result });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return Json(new { Success = false, e.Message });
             }

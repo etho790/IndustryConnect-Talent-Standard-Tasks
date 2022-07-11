@@ -87,7 +87,7 @@ export default class Skill extends React.Component {
         console.log("newSkill array", this.state.newSkill)
 
         //SAVING TO BACKEND!!!!!!
-        this.props.controlFunc("skills", this.state.skills)
+        this.props.controlFunc("skills", this.state.newSkill)
 
         //close edit
         this.closeEdit()
@@ -141,7 +141,7 @@ export default class Skill extends React.Component {
 
 
         //SAVING TO BACKEND!!!!!!
-        this.props.controlFunc("skills", this.state.skills)
+        this.props.controlFunc("skills", this.state.newSkill)
 
     }
 
@@ -224,7 +224,7 @@ export default class Skill extends React.Component {
         console.log("newSkill array", this.state.newSkill)
 
         //SAVING TO BACKEND!!!!!!
-        this.props.controlFunc("skills", this.state.skills)
+        this.props.controlFunc("skills", this.state.newSkill)
     }
 
 
